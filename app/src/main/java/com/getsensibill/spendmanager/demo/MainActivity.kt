@@ -12,7 +12,6 @@ import com.getsensibill.sensibillauth.SensibillAuth
 import com.getsensibill.sensibillauth.SensibillAuthBuilder
 import com.getsensibill.spendmanager.demo.databinding.ActivityMainBinding
 import com.getsensibill.tokenprovider.TokenProvider
-import com.getsensibill.web.ui.WebUiActivity
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
@@ -76,9 +75,9 @@ class MainActivity : AppCompatActivity() {
      * * Initialize the SDK
      * * Applies token to the [TokenProvider]
      * * Start the SDK
-     * * Launches Spend Manager
+     * * Navigates to the launcher activity
      *
-     * If the SDK is already running, we can directly launch the Spend Manager
+     * If the SDK is already running, we can go directly to the launcher activity
      */
     private fun login(withToken: Boolean) {
         loading(true)
@@ -157,9 +156,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Starts the SDK.
-     *
-     * Once started we can start the Spend Manager. Important to remember that the SDK needs
+     * Starts the SDK. Important to remember that the SDK needs
      * to have been initialized first.
      */
     private fun startSDK(userIdentifier: String) {
@@ -182,13 +179,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Will navigate to the launcher activity, where the user can test test out different
+     * Will navigate to the launcher activity, where the user can test out different
      * integration methods.
      */
     private fun startLauncher() {
         loading(false)
         if (SensibillSDK.getState() != CoreState.STARTED) {
-            showToast("Make sure to start the SDK before launching Spend Manager")
+            showToast("Make sure to start the SDK before going to the launcher.")
             return
         }
 
