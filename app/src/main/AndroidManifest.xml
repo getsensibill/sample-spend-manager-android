@@ -12,6 +12,7 @@
         <activity android:name=".LauncherActivity" />
         <activity android:name=".direct.DirectJavaActivity" />
         <activity android:name=".direct.DirectKotlinActivity" />
+        <activity android:name=".subclass.SubclassKotlinActivity"/>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"

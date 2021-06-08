@@ -6,6 +6,7 @@ import android.os.Bundle
 import com.getsensibill.spendmanager.demo.databinding.ActivityLauncherBinding
 import com.getsensibill.spendmanager.demo.direct.DirectJavaActivity
 import com.getsensibill.spendmanager.demo.direct.DirectKotlinActivity
+import com.getsensibill.spendmanager.demo.subclass.SubclassKotlinActivity
 
 class LauncherActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLauncherBinding
@@ -25,8 +26,10 @@ class LauncherActivity : AppCompatActivity() {
             }
 
             // Subclass WebUiActivity integration
-            inheritActivityKotlin.setOnClickListener { }
-            inheritActivityJava.setOnClickListener { }
+            subclassActivityKotlin.setOnClickListener {
+                goToActivity(SubclassKotlinActivity::class.java)
+            }
+            subclassActivityJava.setOnClickListener { }
 
             // Direct fragment integration
             directFragmentKotlin.setOnClickListener { }
