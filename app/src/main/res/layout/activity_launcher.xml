@@ -30,6 +30,7 @@
         app:layout_constraintTop_toBottomOf="@id/title" />
 
 
+    <!-- Direct Integration -->
     <TextView
         android:id="@+id/direct_integration_title"
         android:layout_width="wrap_content"
@@ -63,6 +64,7 @@
         app:layout_constraintStart_toEndOf="@id/direct_integration_kotlin" />
 
 
+    <!-- Inherit Activity Integration -->
     <TextView
         android:id="@+id/inherit_activity_title"
         android:layout_width="wrap_content"
@@ -96,7 +98,7 @@
         app:layout_constraintStart_toEndOf="@id/inherit_activity_kotlin" />
 
 
-    <!-- Direct Fragment -->
+    <!-- Direct Fragment Integration -->
     <TextView
         android:id="@+id/direct_fragment_title"
         android:layout_width="wrap_content"
@@ -130,7 +132,7 @@
         app:layout_constraintStart_toEndOf="@id/direct_fragment_kotlin" />
 
 
-    <!-- Receipt Capture Flow Examples -->
+    <!-- Receipt Capture Flow Integration -->
     <TextView
         android:id="@+id/capture_flow_title"
         android:layout_width="wrap_content"
@@ -162,9 +164,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/capture_flow_title"
         app:layout_constraintStart_toEndOf="@id/capture_flow_kotlin" />
-
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
