@@ -3,4 +3,12 @@
     <string name="login_token">Login With Token</string>
     <string name="login_username">Login With Username</string>
     <string name="logout">Logout</string>
+    <string name="launcher_title">Spend Demo Integrations</string>
+    <string name="launcher_description">Here are several examples of how the SDK can be integrated into your application.</string>
+    <string name="launcher_direct_integration_title">Direct Integration</string>
+    <string name="launcher_inherit_activity_title">Inherit WebUiActivity Integration</string>
+    <string name="launcher_direct_fragment_title">Direct Fragment Integration</string>
+    <string name="launcher_capture_flow_title">Capture Flow Integration</string>
+    <string name="launcher_button_java">Java</string>
+    <string name="launcher_button_kotlin">Kotlin</string>
 </resources>

@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
         if (SensibillSDK.getState() != CoreState.STARTED) {
             initializeSDK(withToken = withToken)
         } else {
-            launchSpend()
+            startLauncher()
         }
     }
 
@@ -171,7 +171,7 @@ class MainActivity : AppCompatActivity() {
 
         SensibillSDK.start(userIdentifier, object : SDKStartup {
             override fun onSDKStarted() {
-                launchSpend()
+                startLauncher()
             }
 
             override fun onSDKFailed(error: LoginError?, p1: String?) {
@@ -182,10 +182,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Launches the Spend Manager if the SDK was started prior. Make sure the SDK was started correctly
-     * and is running, otherwise the Spend Manager will finish() and not be accessible.
+     * Will navigate to the launcher activity, where the user can test test out different
+     * integration methods.
      */
-    private fun launchSpend() {
+    private fun startLauncher() {
         loading(false)
         if (SensibillSDK.getState() != CoreState.STARTED) {
             showToast("Make sure to start the SDK before launching Spend Manager")
@@ -193,7 +193,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Creates the intent and launches it.
-        val intent = Intent(this, WebUiActivity::class.java)
+        val intent = Intent(this, LauncherActivity::class.java)
         startActivity(intent)
     }
 

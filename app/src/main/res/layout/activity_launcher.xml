@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LauncherActivity">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/launcher_title"
+        android:layout_marginTop="@dimen/launcher_title_top_margin"
+        style="@style/Base.TextAppearance.Sensibill.H1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />'
+
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/launcher_description"
+        android:padding="@dimen/launcher_description_padding"
+        style="@style/TextAppearance.AppCompat.Body1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title" />
+
+
+    <TextView
+        android:id="@+id/direct_integration_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/launcher_direct_integration_title"
+        android:layout_marginTop="@dimen/launcher_section_margin"
+        style="@style/Base.TextAppearance.Sensibill.Subtitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/description" />'
+
+    <Button
+        android:id="@+id/direct_integration_kotlin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/launcher_button_kotlin"
+        android:layout_marginEnd="@dimen/launcher_section_button_margin"
+        app:layout_constraintEnd_toStartOf="@+id/direct_integration_java"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/direct_integration_title"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <Button
+        android:id="@+id/direct_integration_java"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/launcher_button_java"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/direct_integration_title"
+        app:layout_constraintStart_toEndOf="@id/direct_integration_kotlin" />
+
+
+    <TextView
+        android:id="@+id/inherit_activity_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/launcher_inherit_activity_title"
+        android:layout_marginTop="@dimen/launcher_section_margin"
+        style="@style/Base.TextAppearance.Sensibill.Subtitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/direct_integration_kotlin" />'
+
+    <Button
+        android:id="@+id/inherit_activity_kotlin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/launcher_button_kotlin"
+        android:layout_marginEnd="@dimen/launcher_section_button_margin"
+        app:layout_constraintEnd_toStartOf="@+id/inherit_activity_java"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inherit_activity_title"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <Button
+        android:id="@+id/inherit_activity_java"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/launcher_button_java"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inherit_activity_title"
+        app:layout_constraintStart_toEndOf="@id/inherit_activity_kotlin" />
+
+
+    <!-- Direct Fragment -->
+    <TextView
+        android:id="@+id/direct_fragment_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/launcher_direct_fragment_title"
+        android:layout_marginTop="@dimen/launcher_section_margin"
+        style="@style/Base.TextAppearance.Sensibill.Subtitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/inherit_activity_kotlin" />'
+
+    <Button
+        android:id="@+id/direct_fragment_kotlin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/launcher_button_kotlin"
+        android:layout_marginEnd="@dimen/launcher_section_button_margin"
+        app:layout_constraintEnd_toStartOf="@+id/direct_fragment_java"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/direct_fragment_title"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <Button
+        android:id="@+id/direct_fragment_java"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/launcher_button_java"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/direct_fragment_title"
+        app:layout_constraintStart_toEndOf="@id/direct_fragment_kotlin" />
+
+
+    <!-- Receipt Capture Flow Examples -->
+    <TextView
+        android:id="@+id/capture_flow_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/launcher_capture_flow_title"
+        android:layout_marginTop="@dimen/launcher_section_margin"
+        style="@style/Base.TextAppearance.Sensibill.Subtitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/direct_fragment_kotlin" />'
+
+    <Button
+        android:id="@+id/capture_flow_kotlin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/launcher_button_kotlin"
+        android:layout_marginEnd="@dimen/launcher_section_button_margin"
+        app:layout_constraintEnd_toStartOf="@+id/capture_flow_java"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/capture_flow_title"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <Button
+        android:id="@+id/capture_flow_java"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/launcher_button_java"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/capture_flow_title"
+        app:layout_constraintStart_toEndOf="@id/capture_flow_kotlin" />
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
