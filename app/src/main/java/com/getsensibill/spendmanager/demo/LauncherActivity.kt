@@ -1,8 +1,11 @@
 package com.getsensibill.spendmanager.demo
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.getsensibill.spendmanager.demo.databinding.ActivityLauncherBinding
+import com.getsensibill.spendmanager.demo.direct.DirectJavaActivity
+import com.getsensibill.spendmanager.demo.direct.DirectKotlinActivity
 
 class LauncherActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLauncherBinding
@@ -14,8 +17,12 @@ class LauncherActivity : AppCompatActivity() {
 
         binding.apply {
             // Basic, direct integration
-            directIntegrationKotlin.setOnClickListener { }
-            directIntegrationJava.setOnClickListener { }
+            directIntegrationKotlin.setOnClickListener {
+                goToActivity(DirectKotlinActivity::class.java)
+            }
+            directIntegrationJava.setOnClickListener {
+                goToActivity(DirectJavaActivity::class.java)
+            }
 
             // Subclass WebUiActivity integration
             inheritActivityKotlin.setOnClickListener { }
@@ -29,5 +36,13 @@ class LauncherActivity : AppCompatActivity() {
             captureFlowKotlin.setOnClickListener { }
             captureFlowJava.setOnClickListener { }
         }
+    }
+
+    /**
+     * Helper function to keep the intent building simple
+     */
+    private fun goToActivity(kClass: Class<*>?) {
+        val intent = Intent(this, kClass)
+        startActivity(intent)
     }
 }
