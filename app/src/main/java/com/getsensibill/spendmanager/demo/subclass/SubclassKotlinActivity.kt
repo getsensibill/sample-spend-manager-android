@@ -24,6 +24,8 @@ class SubclassKotlinActivity : WebUiActivity(), WebUiFragment.Listener {
     private lateinit var binding: ActivitySubclassKotlinBinding
 
     /**
+     * Not required override.
+     *
      * Can be used to override the setContentView, so that it uses your provided
      * activities view, instead of the default [WebUiActivity] view.
      */
@@ -33,11 +35,13 @@ class SubclassKotlinActivity : WebUiActivity(), WebUiFragment.Listener {
     }
 
     /**
+     * Not required override, unless you are overriding [callSetContentView]
+     *
      * If we are overriding the setContentView, we also need to set the container id
      * which will contain the [WebUiFragment].
      */
     override val webContainerId: Int
-        get() = binding.container.id
+        get() = binding.webContainer.id
 
     /**
      * Not required override.
