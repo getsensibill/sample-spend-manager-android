@@ -1,6 +1,7 @@
 package com.getsensibill.spendmanager.demo.subclass
 
 import android.os.Bundle
+import com.getsensibill.spendmanager.demo.R
 import com.getsensibill.spendmanager.demo.databinding.ActivitySubclassKotlinBinding
 import com.getsensibill.web.data.UiFinishReason
 import com.getsensibill.web.data.configuration.NavigationIntent
@@ -41,7 +42,7 @@ class SubclassKotlinActivity : WebUiActivity(), WebUiFragment.Listener {
      * which will contain the [WebUiFragment].
      */
     override val webContainerId: Int
-        get() = binding.webContainer.id
+        get() =  R.id.web_container
 
     /**
      * Not required override.

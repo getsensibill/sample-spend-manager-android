@@ -2,6 +2,7 @@ package com.getsensibill.spendmanager.demo.subclass;
 
 import android.os.Bundle;
 
+import com.getsensibill.spendmanager.demo.R;
 import com.getsensibill.spendmanager.demo.databinding.ActivitySubclassJavaBinding;
 import com.getsensibill.web.data.UiFinishReason;
 import com.getsensibill.web.data.configuration.NavigationIntent;
@@ -48,7 +49,7 @@ public class SubclassJavaActivity extends WebUiActivity implements WebUiFragment
      */
     @Override
     protected int getWebContainerId() {
-        return binding.webContainer.getId();
+        return R.id.web_container;
     }
 
     /**
@@ -72,7 +73,10 @@ public class SubclassJavaActivity extends WebUiActivity implements WebUiFragment
     @Override
     protected @NotNull WebUiFragment createWebUiFragment() {
         WebUiFragment fragment = super.createWebUiFragment();
-        Bundle bundle = new Bundle();
+        Bundle bundle = fragment.getArguments();
+        if (bundle == null) {
+            bundle = new Bundle();
+        }
 
         // Pass in a navigation override. Defaults as .DASHBOARD
         bundle.putParcelable(WebUiFragment.ARG_NAVIGATION_OVERRIDE, NavigationIntent.DASHBOARD.INSTANCE);
@@ -125,7 +129,7 @@ public class SubclassJavaActivity extends WebUiActivity implements WebUiFragment
     @Override
     public void onDisplayNetworkError(boolean networkNotAvailable) {
         super.onDisplayNetworkError(networkNotAvailable);
-        Timber.i(networkNotAvailable ? "true" : "false");
+        Timber.i(String.valueOf(networkNotAvailable));
     }
 
     /**
@@ -138,7 +142,10 @@ public class SubclassJavaActivity extends WebUiActivity implements WebUiFragment
     @Override
     protected @NotNull WebUiNetworkErrorFragment createWebUiNetworkErrorFragment() {
         WebUiNetworkErrorFragment fragment = super.createWebUiNetworkErrorFragment();
-        Bundle bundle = new Bundle();
+        Bundle bundle = fragment.getArguments();
+        if (bundle == null) {
+            bundle = new Bundle();
+        }
 
         // If not provided, the fragment assumes that there is no network connection (default: true)
         bundle.putBoolean(WebUiNetworkErrorFragment.ARG_NO_NETWORK_ERROR, true);
