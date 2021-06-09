@@ -64,38 +64,38 @@
         app:layout_constraintTop_toBottomOf="@+id/direct_integration_title" />
 
 
-    <!-- Inherit Activity Integration -->
+    <!-- Subclass Activity Integration -->
     <TextView
-        android:id="@+id/inherit_activity_title"
+        android:id="@+id/subclass_activity_title"
         style="@style/TextAppearance.Sensibill.Subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/launcher_section_margin"
-        android:text="@string/launcher_inherit_activity_title"
+        android:text="@string/launcher_subclass_activity_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/direct_integration_kotlin" />'
 
     <Button
-        android:id="@+id/inherit_activity_kotlin"
+        android:id="@+id/subclass_activity_kotlin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/launcher_section_button_margin"
         android:text="@string/launcher_button_kotlin"
-        app:layout_constraintEnd_toStartOf="@+id/inherit_activity_java"
+        app:layout_constraintEnd_toStartOf="@+id/subclass_activity_java"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inherit_activity_title"
+        app:layout_constraintTop_toBottomOf="@+id/subclass_activity_title"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <Button
-        android:id="@+id/inherit_activity_java"
+        android:id="@+id/subclass_activity_java"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/launcher_button_java"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/inherit_activity_kotlin"
-        app:layout_constraintTop_toBottomOf="@+id/inherit_activity_title" />
+        app:layout_constraintStart_toEndOf="@id/subclass_activity_kotlin"
+        app:layout_constraintTop_toBottomOf="@+id/subclass_activity_title" />
 
 
     <!-- Direct Fragment Integration -->
@@ -108,7 +108,7 @@
         android:text="@string/launcher_direct_fragment_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/inherit_activity_kotlin" />'
+        app:layout_constraintTop_toBottomOf="@id/subclass_activity_kotlin" />'
 
     <Button
         android:id="@+id/direct_fragment_kotlin"
