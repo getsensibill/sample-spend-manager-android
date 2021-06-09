@@ -17,7 +17,7 @@ import timber.log.Timber
  * When you subclass the WebUiActivity, you do not need to override anything for it to work.
  * It will use all the defaults provided by the [WebUiActivity] and the [WebUiFragment].
  *
- * If you are using your own view, then its important to override the [callSetContentView] and
+ * If you are using your own layout, then its important to override the [callSetContentView] and
  * the [webContainerId] so that the [WebUiActivity] knows where to place the [WebUiFragment].
  */
 class SubclassKotlinActivity : WebUiActivity(), WebUiFragment.Listener {
@@ -59,7 +59,7 @@ class SubclassKotlinActivity : WebUiActivity(), WebUiFragment.Listener {
      * Used to create the [WebUiFragment] held in the Activity. Common reason for overriding
      * this would be if there are arguments that are needed to be supplied to the fragment.
      */
-    override fun createWebUiFragment(): WebUiFragment = WebUiFragment().apply {
+    override fun createWebUiFragment(): WebUiFragment = super.createWebUiFragment().apply {
         arguments = Bundle().apply {
             // Pass in a navigation override. Defaults as .DASHBOARD
             putParcelable(WebUiFragment.ARG_NAVIGATION_OVERRIDE, NavigationIntent.DASHBOARD)
@@ -72,11 +72,13 @@ class SubclassKotlinActivity : WebUiActivity(), WebUiFragment.Listener {
      * Not required override.
      *
      * The shouldNavigateBack from the [webFragment] will inform you if your activity
-     * should handle the back pressed normally.
+     * should handle the back pressed normally. Also note, that if you need direct access to
+     * activity.onBackPressed, we have [activityOnBackPressed] convenience method you can call.
      */
     override fun onBackPressed() {
-        if (webFragment?.shouldNavigateBack() != false) finish()
+        if (webFragment?.shouldNavigateBack() != false) activityOnBackPressed()
     }
+
 
     /**
      * Not required override.
@@ -87,6 +89,7 @@ class SubclassKotlinActivity : WebUiActivity(), WebUiFragment.Listener {
      * Spend Manager, you can override this call.
      */
     override fun onRequestFinish(reason: UiFinishReason) {
+        super.onRequestFinish(reason)
         Timber.i(reason.name)
     }
 
@@ -110,7 +113,7 @@ class SubclassKotlinActivity : WebUiActivity(), WebUiFragment.Listener {
      * Common reason for overriding this would be in case any arguments need to be supplied to the fragment.
      */
     override fun createWebUiNetworkErrorFragment(): WebUiNetworkErrorFragment =
-        createWebUiNetworkErrorFragment().apply {
+        super.createWebUiNetworkErrorFragment().apply {
             arguments = Bundle().apply {
                 // If not provided, the fragment assumes that there is no network connection (default: true)
                 putBoolean(WebUiNetworkErrorFragment.ARG_NO_NETWORK_ERROR, true)
