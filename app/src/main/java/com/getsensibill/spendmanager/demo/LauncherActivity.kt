@@ -6,6 +6,7 @@ import android.os.Bundle
 import com.getsensibill.spendmanager.demo.databinding.ActivityLauncherBinding
 import com.getsensibill.spendmanager.demo.direct.DirectJavaActivity
 import com.getsensibill.spendmanager.demo.direct.DirectKotlinActivity
+import com.getsensibill.spendmanager.demo.fragment.FragmentJavaActivity
 import com.getsensibill.spendmanager.demo.fragment.FragmentKotlinActivity
 import com.getsensibill.spendmanager.demo.subclass.SubclassJavaActivity
 import com.getsensibill.spendmanager.demo.subclass.SubclassKotlinActivity
@@ -39,7 +40,9 @@ class LauncherActivity : AppCompatActivity() {
             directFragmentKotlin.setOnClickListener {
                 goToActivity(FragmentKotlinActivity::class.java)
             }
-            directFragmentJava.setOnClickListener { }
+            directFragmentJava.setOnClickListener {
+                goToActivity(FragmentJavaActivity::class.java)
+            }
 
             // Capture Flow integration
             captureFlowKotlin.setOnClickListener { }
