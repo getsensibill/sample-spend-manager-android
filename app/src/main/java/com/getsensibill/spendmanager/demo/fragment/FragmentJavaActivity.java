@@ -1,11 +1,9 @@
 package com.getsensibill.spendmanager.demo.fragment;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 
-import com.getsensibill.spendmanager.demo.R;
 import com.getsensibill.spendmanager.demo.databinding.ActivityFragmentJavaBinding;
 import com.getsensibill.web.data.UiFinishReason;
 import com.getsensibill.web.data.configuration.NavigationIntent;
@@ -35,10 +33,7 @@ public class FragmentJavaActivity extends AppCompatActivity implements WebUiFrag
 
         if(savedInstanceState == null) {
             WebUiFragment fragment = new WebUiFragment();
-            Bundle bundle = fragment.getArguments();
-            if (bundle == null) {
-                bundle = new Bundle();
-            }
+            Bundle bundle = new Bundle();
 
             // Pass in a navigation override. Defaults as .DASHBOARD
             bundle.putParcelable(
@@ -52,9 +47,10 @@ public class FragmentJavaActivity extends AppCompatActivity implements WebUiFrag
 
             fragment.setArguments(bundle);
 
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_container, fragment, "FRAGMENT_TAG");
-            transaction.commit();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(binding.fragmentContainer.getId(), fragment, "FRAGMENT_TAG")
+                    .commit();
         }
     }
 
@@ -66,20 +62,18 @@ public class FragmentJavaActivity extends AppCompatActivity implements WebUiFrag
      * own fragment or even an alternative logic flow if desired.
      */
     @Override
-    public void onDisplayNetworkError(boolean b) {
+    public void onDisplayNetworkError(boolean networkNotAvailable) {
         WebUiNetworkErrorFragment fragment = new WebUiNetworkErrorFragment();
-        Bundle bundle = fragment.getArguments();
-        if (bundle == null) {
-            bundle = new Bundle();
-        }
+        Bundle bundle = new Bundle();
 
         // If not provided, the fragment assumes that there is no network connection (default: true)
-        bundle.putBoolean(WebUiNetworkErrorFragment.ARG_NO_NETWORK_ERROR, true);
+        bundle.putBoolean(WebUiNetworkErrorFragment.ARG_NO_NETWORK_ERROR, networkNotAvailable);
         fragment.setArguments(bundle);
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, fragment, "NETWORK_ERROR_FRAGMENT_TAG");
-        transaction.commit();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(binding.fragmentContainer.getId(), fragment, "NETWORK_ERROR_FRAGMENT_TAG")
+                .commit();
     }
 
     /**
