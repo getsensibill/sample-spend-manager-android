@@ -9,15 +9,15 @@ import com.getsensibill.web.data.configuration.NavigationIntent
 import com.getsensibill.web.data.configuration.ProgrammaticTheme
 import com.getsensibill.web.data.models.Brand
 import com.getsensibill.web.ui.WebUiFragment
+import com.getsensibill.web.ui.WebUiFragment.Listener
 import com.getsensibill.web.ui.WebUiNetworkErrorFragment
 
 /**
  * Directly using the [WebUiFragment]
  * <p>
- * When using the [WebUiFragment] directly, there are no required overrides. However, if you do
- * not implement the [WebUiFragment.Listener], you will not be able to observe when the
- * fragment is requesting to be finished, or when a network error takes place. This is a problem
- * because if either of these events are triggered, your application will be stuck in a dead state.
+ * When using [WebUiFragment] directly, please ensure to properly implement the [Listener] methods.
+ * Also, please use, or see [WebUiNetworkErrorFragment] as reference for what to display when
+ * [Listener.onDisplayNetworkError] is called.
  */
 class FragmentKotlinActivity : AppCompatActivity(), WebUiFragment.Listener {
     private lateinit var binding: ActivityFragmentKotlinBinding
