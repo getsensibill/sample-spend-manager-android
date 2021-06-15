@@ -16,6 +16,7 @@
         <activity android:name=".subclass.SubclassJavaActivity" />
         <activity android:name=".fragment.FragmentKotlinActivity" />
         <activity android:name=".fragment.FragmentJavaActivity" />
+        <activity android:name=".capture_flow.CaptureFlowKotlinActivity" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
