@@ -29,8 +29,7 @@ public class CaptureFlowJavaActivity extends AppCompatActivity {
     private CaptureFlowCoordinator captureFlow = new CaptureFlowCoordinator(this);
 
     // Setup the capture flow listener which is used to listen to the state changing
-    private CaptureFlowCoordinator.CaptureFlowListener captureFlowListener =
-            new CaptureFlowCoordinator.CaptureFlowListener() {
+    private CaptureFlowCoordinator.CaptureFlowListener captureFlowListener = new CaptureFlowCoordinator.CaptureFlowListener() {
         @Override
         public void onCaptureFlowUpdate(@NotNull CaptureFlowState newState,
                                         @Nullable String externalAccountTransactionId) {
