@@ -3,6 +3,7 @@ package com.getsensibill.spendmanager.demo
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.getsensibill.spendmanager.demo.capture_flow.CaptureFlowJavaActivity
 import com.getsensibill.spendmanager.demo.capture_flow.CaptureFlowKotlinActivity
 import com.getsensibill.spendmanager.demo.databinding.ActivityLauncherBinding
 import com.getsensibill.spendmanager.demo.direct.DirectJavaActivity
@@ -49,7 +50,9 @@ class LauncherActivity : AppCompatActivity() {
             captureFlowKotlin.setOnClickListener {
                 goToActivity(CaptureFlowKotlinActivity::class.java)
             }
-            captureFlowJava.setOnClickListener { }
+            captureFlowJava.setOnClickListener {
+                goToActivity(CaptureFlowJavaActivity::class.java)
+            }
         }
     }
 
