@@ -7,7 +7,7 @@ import android.os.Bundle;
 import com.getsensibill.spendmanager.demo.databinding.ActivityFragmentJavaBinding;
 import com.getsensibill.web.data.UiFinishReason;
 import com.getsensibill.web.data.configuration.NavigationIntent;
-import com.getsensibill.web.data.configuration.ProgrammaticTheme;
+import com.getsensibill.web.data.configuration.WebTheme;
 import com.getsensibill.web.data.models.Brand;
 import com.getsensibill.web.ui.WebUiFragment;
 import com.getsensibill.web.ui.WebUiNetworkErrorFragment;
@@ -42,8 +42,8 @@ public class FragmentJavaActivity extends AppCompatActivity implements WebUiFrag
             );
 
             // Pass in a custom Theme override. Defaults to null
-            ProgrammaticTheme theme = new ProgrammaticTheme(new Brand());
-            bundle.putParcelable(WebUiFragment.ARG_PROGRAMMATIC_THEME_OVERRIDE, theme);
+            WebTheme theme = new WebTheme(new Brand());
+            bundle.putParcelable(WebUiFragment.ARG_WEB_THEME_OVERRIDE, theme);
 
             fragment.setArguments(bundle);
 
