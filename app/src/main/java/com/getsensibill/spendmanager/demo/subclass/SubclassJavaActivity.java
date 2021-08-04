@@ -6,7 +6,7 @@ import com.getsensibill.spendmanager.demo.R;
 import com.getsensibill.spendmanager.demo.databinding.ActivitySubclassJavaBinding;
 import com.getsensibill.web.data.UiFinishReason;
 import com.getsensibill.web.data.configuration.NavigationIntent;
-import com.getsensibill.web.data.configuration.ProgrammaticTheme;
+import com.getsensibill.web.data.configuration.WebTheme;
 import com.getsensibill.web.data.models.Brand;
 import com.getsensibill.web.ui.WebUiActivity;
 import com.getsensibill.web.ui.WebUiFragment;
@@ -82,8 +82,8 @@ public class SubclassJavaActivity extends WebUiActivity implements WebUiFragment
         bundle.putParcelable(WebUiFragment.ARG_NAVIGATION_OVERRIDE, NavigationIntent.DASHBOARD.INSTANCE);
 
         // Pass in a custom Theme override. Defaults to null
-        ProgrammaticTheme theme = new ProgrammaticTheme(new Brand());
-        bundle.putParcelable(WebUiFragment.ARG_PROGRAMMATIC_THEME_OVERRIDE, theme);
+        WebTheme theme = new WebTheme(new Brand());
+        bundle.putParcelable(WebUiFragment.ARG_WEB_THEME_OVERRIDE, theme);
 
         fragment.setArguments(bundle);
         return fragment;

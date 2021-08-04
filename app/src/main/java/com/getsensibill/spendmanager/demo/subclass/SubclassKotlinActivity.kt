@@ -5,7 +5,7 @@ import com.getsensibill.spendmanager.demo.R
 import com.getsensibill.spendmanager.demo.databinding.ActivitySubclassKotlinBinding
 import com.getsensibill.web.data.UiFinishReason
 import com.getsensibill.web.data.configuration.NavigationIntent
-import com.getsensibill.web.data.configuration.ProgrammaticTheme
+import com.getsensibill.web.data.configuration.WebTheme
 import com.getsensibill.web.data.models.Brand
 import com.getsensibill.web.ui.WebUiActivity
 import com.getsensibill.web.ui.WebUiFragment
@@ -65,7 +65,7 @@ class SubclassKotlinActivity : WebUiActivity(), WebUiFragment.Listener {
             // Pass in a navigation override. Defaults as .DASHBOARD
             putParcelable(WebUiFragment.ARG_NAVIGATION_OVERRIDE, NavigationIntent.DASHBOARD)
             // Pass in a custom Theme override. Defaults to null
-            putParcelable(WebUiFragment.ARG_PROGRAMMATIC_THEME_OVERRIDE, ProgrammaticTheme(Brand()))
+            putParcelable(WebUiFragment.ARG_WEB_THEME_OVERRIDE, WebTheme(Brand()))
         }
     }
 

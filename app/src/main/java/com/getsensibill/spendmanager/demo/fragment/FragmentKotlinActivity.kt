@@ -6,7 +6,7 @@ import androidx.fragment.app.commit
 import com.getsensibill.spendmanager.demo.databinding.ActivityFragmentKotlinBinding
 import com.getsensibill.web.data.UiFinishReason
 import com.getsensibill.web.data.configuration.NavigationIntent
-import com.getsensibill.web.data.configuration.ProgrammaticTheme
+import com.getsensibill.web.data.configuration.WebTheme
 import com.getsensibill.web.data.models.Brand
 import com.getsensibill.web.ui.WebUiFragment
 import com.getsensibill.web.ui.WebUiFragment.Listener
@@ -34,8 +34,8 @@ class FragmentKotlinActivity : AppCompatActivity(), WebUiFragment.Listener {
                     putParcelable(WebUiFragment.ARG_NAVIGATION_OVERRIDE, NavigationIntent.DASHBOARD)
                     // Pass in a custom Theme override. Defaults to null
                     putParcelable(
-                        WebUiFragment.ARG_PROGRAMMATIC_THEME_OVERRIDE,
-                        ProgrammaticTheme(Brand())
+                        WebUiFragment.ARG_WEB_THEME_OVERRIDE,
+                        WebTheme(Brand())
                     )
                 }
             }

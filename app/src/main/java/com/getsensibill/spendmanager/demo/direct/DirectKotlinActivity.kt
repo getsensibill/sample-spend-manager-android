@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.getsensibill.spendmanager.demo.R
 import com.getsensibill.web.data.configuration.NavigationIntent
-import com.getsensibill.web.data.configuration.ProgrammaticTheme
+import com.getsensibill.web.data.configuration.WebTheme
 import com.getsensibill.web.data.models.Brand
 import com.getsensibill.web.ui.WebUiActivity
 
@@ -14,7 +14,7 @@ import com.getsensibill.web.ui.WebUiActivity
  * <p>
  * Much more limited means of customization. We are directly calling [WebUiActivity] and letting
  * the default behaviour take place. You can pass in an [ARG_NAVIGATION_OVERRIDE] to override
- * the default navigation intent, and or an [ARG_PROGRAMMATIC_THEME_OVERRIDE] to override the
+ * the default navigation intent, and or an [ARG_WEB_THEME_OVERRIDE] to override the
  * default theme.
  */
 class DirectKotlinActivity : AppCompatActivity() {
@@ -34,7 +34,7 @@ class DirectKotlinActivity : AppCompatActivity() {
             // Pass in a navigation override. Defaults as .DASHBOARD
             putExtra(WebUiActivity.ARG_NAVIGATION_OVERRIDE, NavigationIntent.DASHBOARD)
             // Pass in a custom Theme override. Defaults to null
-            putExtra(WebUiActivity.ARG_PROGRAMMATIC_THEME_OVERRIDE, ProgrammaticTheme(Brand()))
+            putExtra(WebUiActivity.ARG_WEB_THEME_OVERRIDE, WebTheme(Brand()))
         }
         startActivity(intent)
     }
