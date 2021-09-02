@@ -28,7 +28,7 @@ class CaptureFlowKotlinActivity : AppCompatActivity() {
 
             override fun onCaptureFlowUpdate(newState: CaptureFlowState, externalAccountTransactionId: String?) {
                 val text = when (newState) {
-                    is CaptureFlowState.IMAGES_CAPTURED -> "Images are captured"
+                    is CaptureFlowState.ImagesCaptured -> "Images are captured"
                     is CaptureFlowState.FLOW_CANCELLED -> "Capture flow cancelled"
                     is CaptureFlowState.Error -> "Error occurred: ${newState.exception.message}"
                     is CaptureFlowState.Transacting -> {

@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.getsensibill.spendmanager.demo.capture_flow.CaptureFlowJavaActivity
 import com.getsensibill.spendmanager.demo.capture_flow.CaptureFlowKotlinActivity
+import com.getsensibill.spendmanager.demo.capture_flow_metadata.CaptureWithMetaDataFlowJavaActivity
+import com.getsensibill.spendmanager.demo.capture_flow_metadata.CaptureWithMetaDataFlowKotlinActivity
 import com.getsensibill.spendmanager.demo.databinding.ActivityLauncherBinding
 import com.getsensibill.spendmanager.demo.direct.DirectJavaActivity
 import com.getsensibill.spendmanager.demo.direct.DirectKotlinActivity
@@ -52,6 +54,14 @@ class LauncherActivity : AppCompatActivity() {
             }
             captureFlowJava.setOnClickListener {
                 goToActivity(CaptureFlowJavaActivity::class.java)
+            }
+
+            captureWithMetadataFlowKotlin.setOnClickListener {
+                goToActivity(CaptureWithMetaDataFlowKotlinActivity::class.java)
+            }
+
+            captureWithMetadataFlowJava.setOnClickListener {
+                goToActivity(CaptureWithMetaDataFlowJavaActivity::class.java)
             }
         }
     }

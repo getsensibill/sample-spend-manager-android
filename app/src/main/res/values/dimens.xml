@@ -2,6 +2,6 @@
     <dimen name="launcher_title_top_margin">20dp</dimen>
     <dimen name="launcher_description_padding">10dp</dimen>
     <dimen name="launcher_button_spacing_margin">35dp</dimen>
-    <dimen name="launcher_section_margin">50dp</dimen>
-    <dimen name="launcher_section_button_margin">35dp</dimen>
+    <dimen name="launcher_section_margin">20dp</dimen>
+    <dimen name="launcher_section_button_margin">15dp</dimen>
 </resources>
