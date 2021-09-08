@@ -165,4 +165,37 @@
         app:layout_constraintStart_toEndOf="@id/capture_flow_kotlin"
         app:layout_constraintTop_toBottomOf="@+id/capture_flow_title" />
 
+    <!-- Receipt Capture With Metadata Flow Integration -->
+    <TextView
+        android:id="@+id/capture_with_metadata_flow_title"
+        style="@style/TextAppearance.Sensibill.Subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/launcher_section_margin"
+        android:text="@string/launcher_capture_with_metadata_flow_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/capture_flow_kotlin" />'
+
+    <Button
+        android:id="@+id/capture_with_metadata_flow_kotlin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/launcher_section_button_margin"
+        android:text="@string/launcher_button_kotlin"
+        app:layout_constraintEnd_toStartOf="@+id/capture_with_metadata_flow_java"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/capture_with_metadata_flow_title"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <Button
+        android:id="@+id/capture_with_metadata_flow_java"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/launcher_button_java"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/capture_with_metadata_flow_kotlin"
+        app:layout_constraintTop_toBottomOf="@+id/capture_with_metadata_flow_title" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

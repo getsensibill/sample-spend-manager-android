@@ -9,6 +9,7 @@
     <string name="launcher_subclass_activity_title">Subclass WebUiActivity Integration</string>
     <string name="launcher_direct_fragment_title">Direct Fragment Integration</string>
     <string name="launcher_capture_flow_title">Capture Flow Integration</string>
+    <string name="launcher_capture_with_metadata_flow_title">Capture With Metadata Flow Integration</string>
     <string name="launcher_button_java">Java</string>
     <string name="launcher_button_kotlin">Kotlin</string>
 </resources>

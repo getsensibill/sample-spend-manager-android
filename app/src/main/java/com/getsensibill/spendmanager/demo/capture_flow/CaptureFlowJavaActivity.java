@@ -35,7 +35,7 @@ public class CaptureFlowJavaActivity extends AppCompatActivity {
                                         @Nullable String externalAccountTransactionId) {
             String text = "\n " + new Date().toString() + ": ";
 
-            if (newState instanceof CaptureFlowState.IMAGES_CAPTURED) {
+            if (newState instanceof CaptureFlowState.ImagesCaptured) {
                 // Handle the state that images have just been captured
                 text += "Images are captured";
 

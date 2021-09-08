@@ -149,7 +149,7 @@ class MainActivity : AppCompatActivity() {
             }
             override fun onFailure(error: SensibillAuth.AuthError) {
                 Timber.e("Failed to authenticate: %s", error.shortDescription)
-                loading(false)
+                loading(false, error.shortDescription)
             }
         }
         auth.signIn(username, password, sessionListener)
@@ -201,11 +201,15 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 
-    private fun loading(isLoading: Boolean) = binding.apply {
-        if(isLoading) progress.show() else progress.hide()
-        loginWithToken.isEnabled = !isLoading
-        loginWithUsername.isEnabled = !isLoading
-        logout.isEnabled = !isLoading
+    private fun loading(isLoading: Boolean, error: String? = null) = runOnUiThread {
+        binding.apply {
+            if (isLoading) progress.show() else progress.hide()
+            loginWithToken.isEnabled = !isLoading
+            loginWithUsername.isEnabled = !isLoading
+            logout.isEnabled = !isLoading
+
+            error?.let { Toast.makeText(this@MainActivity, it, Toast.LENGTH_LONG).show() }
+        }
     }
 
     companion object {
