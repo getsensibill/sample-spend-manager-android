@@ -3,7 +3,6 @@ package com.getsensibill.spendmanager.demo.capture_flow_metadata
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.getsensibill.capturestandalone.models.CaptureConfig
 import com.getsensibill.web.ui.CaptureWithMetadataFlowActivity
 
 /**
@@ -17,12 +16,11 @@ class CaptureWithMetaDataFlowKotlinActivity : AppCompatActivity() {
 
         val intent = Intent(this, CaptureWithMetadataFlowActivity::class.java)
 
-//        val captureConfig = CaptureWithMetadataFlowActivity.DEFAULT_CAPTURE_CONFIG.copy(enableLongCapture = false)
-        val captureConfig = CaptureConfig(
-            enableLongCapture = false,
-            enableMultiPageCapture = false,
-            maxPages = 1
+        // copies the default capture config, disables long capture for demo
+        val captureConfig = CaptureWithMetadataFlowActivity.DEFAULT_CAPTURE_CONFIG.copy(
+            enableLongCapture = false
         )
+
         intent.putExtra(CaptureWithMetadataFlowActivity.ARG_CAPTURE_CONFIG, captureConfig)
 
         // If the receipt should be attached to some external transaction
