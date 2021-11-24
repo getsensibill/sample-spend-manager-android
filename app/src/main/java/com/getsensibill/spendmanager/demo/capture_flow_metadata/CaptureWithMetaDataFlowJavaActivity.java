@@ -1,9 +1,10 @@
 package com.getsensibill.spendmanager.demo.capture_flow_metadata;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.getsensibill.capturestandalone.models.CaptureConfig;
 import com.getsensibill.capturestandalone.models.FlashMode;
 import com.getsensibill.web.ui.CaptureWithMetadataFlowActivity;
@@ -26,17 +27,16 @@ public class CaptureWithMetaDataFlowJavaActivity extends AppCompatActivity {
         // If you wish to override the default capture config
         final CaptureConfig captureConfig = new CaptureConfig(
                 true,
+                true,
                 FlashMode.FLASH_MODE_OFF,
                 true,
                 true,
                 false,
                 true,
-                true,
-                false,
-                1,
+                3,
                 false,
                 true,
-                true,
+                false,
                 true,
                 true,
                 true
