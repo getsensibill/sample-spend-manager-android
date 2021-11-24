@@ -85,38 +85,71 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Initialize the SDK by creating a Sensibill Auth object, and passing it into the SDK builder.
-     * Once the SDK is initialized, setup authentication, and start the SDK.
+     * Initialize the Sensibill SDK, with correct auth configuration based on [withToken].
+     *
+     * **If using a token directly:**
+     * - Create an `Initializer` with the required configuration for the SDK
+     * - Create and provide a `TokenProvider` which will provide a token (for this demo,
+     *   [privateToken]) to the SDK when it requests it
+     * - Initialize the SDK
+     * - Upon initialization, start the SDK
+     *
+     * **If using username/password auth:**
+     * - Create a `SensibillAuth`, which will be used for username/password authentication
+     * - Create an `Initializer` with the required configuration for the SDK
+     * - Provide the `Initializer` with the `TokenProvider` from `SensibillAuth`
+     * - Initialize the SDK
+     * - Upon initialization, authenticate with the Sensibill servers using the provided [username]
+     *   and [password]
+     * - Upon successful authentication, start the SDK
      */
     private fun initializeSDK(withToken: Boolean) {
         Timber.i("For the demo, we are just releasing the SDK on every run through.")
         SensibillSDK.release()
 
-        // creates an auth settings based on the key, secret, credential type and a possible redirect
-        val authSettings = OAuthSettings(apiKey, apiSecret, credentialType, redirectURL, false)
+        // Pair<Initializer, () -> Unit>
+        val (initializer, onInitialized) = if (withToken) {
+            // Creates the builder for the SDK Initializer
+            val builder = InitializationBuilder(this, environment)
 
-        // builds the SensibillAuth object using the auth settings and environment
-        val sensibillAuth = SensibillAuthBuilder(this, environment, authSettings)
-            .build()
+            // You can use our convenience function to create a [TokenProvider] implementation using
+            // a lambda.  If using an integration server for providing tokens, this token provider
+            // is called when the SDK requires a (new) auth token.
+            val tokenProvider = TokenProvider.fromLambda { _, _, _ -> privateToken }
 
-        // Creates the builder for the SDK
-        val builder = InitializationBuilder(this, environment)
+            // Provide a Token Provider to SDK initializer.  This token provider will be called when the
+            // SDK starts, as well as if the token expires while the SDK is in use.
+            // The token provider _must_ be provided in the `Initializer`, however it will not be used
+            // until `SensibillSDK.start` is called.
+            builder.authTokenProvider(tokenProvider)
 
-        // Add Token Provider to SDK
-        val tokenProvider = if (withToken) {
-            TokenProvider.fromLambda { _, _, _ -> privateToken }
-        } else sensibillAuth.getTokenProvider()
-        builder.authTokenProvider(tokenProvider)
+            builder.build() to { startSDK("userIdentifierFromToken") }
 
-        // Initializes the SDK with the builder
-        SensibillSDK.initialize(builder.build(), object : SDKInitializeListener {
-            override fun onInitialized() {
-                if (withToken) {
-                    startSDK("userIdentifierFromToken")
-                } else {
-                    authenticate(sensibillAuth, username, password)
-                }
-            }
+        } else {
+            // creates an auth settings based on the key, secret, credential type and a possible redirect
+            val oAuthSettings = OAuthSettings(apiKey, apiSecret, credentialType, redirectURL, false)
+
+            // builds the SensibillAuth object using the auth settings and environment
+            val sensibillAuth = SensibillAuthBuilder(this, environment, oAuthSettings).build()
+
+            // Creates the builder for the SDK Initializer
+            val builder = InitializationBuilder(this, environment)
+
+            // If using username / password auth, use the `TokenProvider` provided by `SensibillAuth`
+            val tokenProvider = sensibillAuth.getTokenProvider()
+
+            // Provide a Token Provider to SDK initializer.  This token provider will be called when the
+            // SDK starts, as well as if the token expires while the SDK is in use.
+            // The token provider _must_ be provided in the `Initializer`, however it will not be used
+            // until `SensibillSDK.start` is called.
+            builder.authTokenProvider(tokenProvider)
+
+            builder.build() to { authenticate(sensibillAuth, username, password) }
+        }
+
+        // Initialize the SDK
+        SensibillSDK.initialize(initializer, object : SDKInitializeListener {
+            override fun onInitialized() { onInitialized() }
 
             override fun onInitializationFailed() {
                 showToast("Failed to initialize the SDK. Please make sure you have set the correct variables at the top of the MainActivity, and have an active internet connection.")
