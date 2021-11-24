@@ -34,10 +34,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if(apiKey.isBlank() || apiKey == PROVIDED_BY_SENSIBILL) {
-            throw Exception("Please set your API key, secret and credential type. This is all provided by Sensibill.")
-        }
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -45,14 +41,14 @@ class MainActivity : AppCompatActivity() {
             progress.hide()
 
             loginWithToken.setOnClickListener {
-                if(privateToken.isBlank() || privateToken == PROVIDED_BY_SENSIBILL) {
+                if(!checkCredentialsSet(privateToken)) {
                     showToast("Please set your token before running the demo. Check MainActivity.kt")
                 } else {
                     login(withToken = true)
                 }
             }
             loginWithUsername.setOnClickListener {
-                if(username.isBlank() || username == PROVIDED_BY_SENSIBILL) {
+                if (!checkCredentialsSet(apiKey, apiSecret, credentialType, username, password)) {
                     showToast("Please set your username and password before running the demo. Check MainActivity.kt")
                 } else {
                     login(withToken = false)
@@ -107,13 +103,16 @@ class MainActivity : AppCompatActivity() {
         val builder = InitializationBuilder(this, environment)
 
         // Add Token Provider to SDK
-        builder.authTokenProvider(sensibillAuth.getTokenProvider())
+        val tokenProvider = if (withToken) {
+            TokenProvider.fromLambda { _, _, _ -> privateToken }
+        } else sensibillAuth.getTokenProvider()
+        builder.authTokenProvider(tokenProvider)
 
         // Initializes the SDK with the builder
         SensibillSDK.initialize(builder.build(), object : SDKInitializeListener {
             override fun onInitialized() {
                 if (withToken) {
-                    authenticate(privateToken)
+                    startSDK("userIdentifierFromToken")
                 } else {
                     authenticate(sensibillAuth, username, password)
                 }
@@ -124,16 +123,6 @@ class MainActivity : AppCompatActivity() {
                 loading(false)
             }
         })
-    }
-
-    /**
-     * You can use our convenience function to create a [TokenProvider] implementation using a
-     * lambda, and set the token. This should only be set after the SDK was been initialized,
-     * and the [TokenProvider] has been setup, as we are doing in the startSDK() function.
-     */
-    private fun authenticate(token: String) {
-        TokenProvider.fromLambda { _, _, _ -> token }
-        startSDK("userIdentifierFromToken")
     }
 
     /**
@@ -211,6 +200,9 @@ class MainActivity : AppCompatActivity() {
             error?.let { Toast.makeText(this@MainActivity, it, Toast.LENGTH_LONG).show() }
         }
     }
+
+    private fun checkCredentialsSet(vararg requiredCredentials: String): Boolean =
+        requiredCredentials.all { it.isNotBlank() && it != PROVIDED_BY_SENSIBILL }
 
     companion object {
         private const val PROVIDED_BY_SENSIBILL = "TO BE PROVIDED BY SENSIBILL"
