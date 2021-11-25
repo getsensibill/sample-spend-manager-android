@@ -115,7 +115,9 @@ class MainActivity : AppCompatActivity() {
             // You can use our convenience function to create a [TokenProvider] implementation using
             // a lambda.  If using an integration server for providing tokens, this token provider
             // is called when the SDK requires a (new) auth token.
-            val tokenProvider = TokenProvider.fromLambda { _, _, _ -> privateToken }
+            val tokenProvider = TokenProvider.fromLambda { _, _, listener ->
+                listener.onTokenProvided(privateToken)
+            }
 
             // Provide a Token Provider to SDK initializer.  This token provider will be called when the
             // SDK starts, as well as if the token expires while the SDK is in use.
