@@ -14,7 +14,7 @@ object AuthConfig {
     var apiKey = PROVIDED_BY_SENSIBILL
     var apiSecret = PROVIDED_BY_SENSIBILL
     var credentialType = PROVIDED_BY_SENSIBILL
-    var environment = DefaultEnvironment.BETA_STAGING
+    var environment = DefaultEnvironment.BETA_PROD
 
     // Does not need to be updated or set for demo use
     var redirectURL = "https://testclient.com/redirect"
