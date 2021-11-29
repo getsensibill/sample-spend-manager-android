@@ -25,6 +25,8 @@
         <activity android:name=".capture_flow.CaptureFlowJavaActivity" />
         <activity android:name=".capture_flow_metadata.CaptureWithMetaDataFlowKotlinActivity" />
         <activity android:name=".capture_flow_metadata.CaptureWithMetaDataFlowJavaActivity" />
+        <activity android:name=".DemoAuthActivity" />
+        <activity android:name=".DemoAuthJavaActivity" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
