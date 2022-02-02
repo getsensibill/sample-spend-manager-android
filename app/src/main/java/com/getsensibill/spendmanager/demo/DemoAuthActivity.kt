@@ -102,6 +102,7 @@ class DemoAuthActivity : AppCompatActivity() {
 
         // Pair<Initializer, () -> Unit>
         val (initializer, afterInitialized) = if (withToken) {
+
             // Creates the builder for the SDK Initializer
             val builder = InitializationBuilder(this, environment)
 
