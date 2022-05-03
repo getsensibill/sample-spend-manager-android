@@ -34,6 +34,9 @@ class FragmentKotlinActivity : AppCompatActivity(),
     private val webFragment: WebUiFragment?
         get() = supportFragmentManager.findFragmentByTag(TAG_WEB_FRAGMENT) as? WebUiFragment
 
+    private val errorFragment: WebUiNetworkErrorFragment?
+        get() = supportFragmentManager.findFragmentByTag(TAG_WEB_NETWORK_ERROR_FRAGMENT) as? WebUiNetworkErrorFragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFragmentKotlinBinding.inflate(layoutInflater)
@@ -58,7 +61,8 @@ class FragmentKotlinActivity : AppCompatActivity(),
     override fun onDisplayNetworkError(networkNotAvailable: Boolean) {
         if (isFinishing) return
         supportFragmentManager.commit(true) {
-            val fragment = WebUiNetworkErrorFragment().apply {
+            val fragment = errorFragment ?: WebUiNetworkErrorFragment()
+            fragment.apply {
                 arguments = Bundle().apply {
                     // If not provided, the fragment assumes that there is no network connection (default: true)
                     putBoolean(WebUiNetworkErrorFragment.ARG_NO_NETWORK_ERROR, networkNotAvailable)

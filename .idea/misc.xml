@@ -7,6 +7,7 @@
         <entry key="../../../../.gradle/caches/transforms-3/439ad0084930e3875c88796ac0bd7fc2/transformed/jetified-sensibill-sdk-web-2021.5.3/res/drawable/ic_error.xml" value="0.207" />
         <entry key="app/src/main/res/layout/activity_capture_flow_java.xml" value="0.21979166666666666" />
         <entry key="app/src/main/res/layout/activity_capture_flow_kotlin.xml" value="0.21979166666666666" />
+        <entry key="app/src/main/res/layout/activity_fragment_java.xml" value="0.21822916666666667" />
       </map>
     </option>
   </component>

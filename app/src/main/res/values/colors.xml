@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="sb__primary">#186DB3</color>
+    <color name="sb__primary_variant">#21384D</color>
+    <color name="sb__on_primary">#EEEEEE</color>
+    <color name="sb__secondary">#F8897F</color>
+    <color name="sb__on_secondary">#FEFEFE</color>
+</resources>
