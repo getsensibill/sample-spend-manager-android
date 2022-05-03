@@ -23,4 +23,7 @@
     <!-- Error Colours -->
     <color name="sb__error">#FF0000</color>
     <color name="sb__on_error">#FFFFFF</color>
+
+    <color name="sb__colourBackground">#FFFFFF</color>
+    <color name="sb__colourOnBackground">#000000</color>
 </resources>
