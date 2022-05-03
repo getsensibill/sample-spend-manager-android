@@ -21,7 +21,9 @@ import org.jetbrains.annotations.NotNull;
  * Also, please use, or see [WebUiNetworkErrorFragment] as reference for what to display when
  * [Listener.onDisplayNetworkError] is called.
  */
-public class FragmentJavaActivity extends AppCompatActivity implements WebUiFragment.Listener {
+public class FragmentJavaActivity extends AppCompatActivity
+        implements WebUiFragment.Listener, WebUiNetworkErrorFragment.Listener {
+
     private ActivityFragmentJavaBinding binding;
 
     @Override
@@ -31,32 +33,14 @@ public class FragmentJavaActivity extends AppCompatActivity implements WebUiFrag
         binding = ActivityFragmentJavaBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        if(savedInstanceState == null) {
-            WebUiFragment fragment = new WebUiFragment();
-            Bundle bundle = new Bundle();
-
-            // Pass in a navigation override. Defaults as .DASHBOARD
-            bundle.putParcelable(
-                    WebUiFragment.ARG_NAVIGATION_OVERRIDE,
-                    NavigationIntent.DASHBOARD.INSTANCE
-            );
-
-            // Pass in a custom Theme override. Defaults to null
-            WebTheme theme = new WebTheme(new Brand());
-            bundle.putParcelable(WebUiFragment.ARG_WEB_THEME_OVERRIDE, theme);
-
-            fragment.setArguments(bundle);
-
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(binding.fragmentContainer.getId(), fragment, "FRAGMENT_TAG")
-                    .commit();
+        if (savedInstanceState == null) {
+            loadWebUi();
         }
     }
 
     /**
      * Required Override when using [WebUiFragment.Listener]
-     *
+     * <p>
      * Handle when the network error fragment needs to be navigated to. We have provided a
      * [WebUiNetworkErrorFragment] that you can display to the user. Or you can use your
      * own fragment or even an alternative logic flow if desired.
@@ -70,15 +54,16 @@ public class FragmentJavaActivity extends AppCompatActivity implements WebUiFrag
         bundle.putBoolean(WebUiNetworkErrorFragment.ARG_NO_NETWORK_ERROR, networkNotAvailable);
         fragment.setArguments(bundle);
 
+        String TAG_WEB_NETWORK_ERROR_FRAGMENT = "TAG_WEB_NETWORK_ERROR_FRAGMENT";
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(binding.fragmentContainer.getId(), fragment, "NETWORK_ERROR_FRAGMENT_TAG")
+                .replace(binding.fragmentContainer.getId(), fragment, TAG_WEB_NETWORK_ERROR_FRAGMENT)
                 .commit();
     }
 
     /**
      * Required Override when using [WebUiFragment.Listener]
-     *
+     * <p>
      * This will be called when ending the WebUi flow, and will give you a [UiFinishReason]
      * which can be used to identify why the flow is ending. When integrating by fragment, you
      * will need to handle what happens when the flow ends here.
@@ -86,5 +71,58 @@ public class FragmentJavaActivity extends AppCompatActivity implements WebUiFrag
     @Override
     public void onRequestFinish(@NotNull UiFinishReason uiFinishReason) {
         finish();
+    }
+
+    /**
+     * Required Override when using [WebUiNetworkErrorFragment.Listener]
+     * <p>
+     * This is the returning call from the [WebUiNetworkErrorFragment] when the ok/close button is
+     * pressed. If using a fragment integration and not subclassing [WebUiActivity], then the
+     * error view will not know how to handle the event.
+     */
+    @Override
+    public void onNetworkErrorClose() {
+        onRequestFinish(UiFinishReason.UNABLE_TO_LOAD_SPA);
+    }
+
+    // -----WebUiNetworkErrorFragment.Listener Overrides -----
+
+    /**
+     * Required Override when using [WebUiNetworkErrorFragment.Listener]
+     * <p>
+     * This is the returning call from the [WebUiNetworkErrorFragment] when the retry button is
+     * pressed. If using a fragment integration and not subclassing [WebUiActivity], then the
+     * error view will not know how to handle the event.
+     */
+    @Override
+    public void onNetworkErrorRetry() {
+        loadWebUi();
+    }
+
+    private void loadWebUi() {
+        if (this.isFinishing()) {
+            return;
+        }
+
+        WebUiFragment fragment = new WebUiFragment();
+        Bundle bundle = new Bundle();
+
+        // Pass in a navigation override. Defaults as .DASHBOARD
+        bundle.putParcelable(
+                WebUiFragment.ARG_NAVIGATION_OVERRIDE,
+                NavigationIntent.DASHBOARD.INSTANCE
+        );
+
+        // Pass in a custom Theme override. Defaults to null
+        WebTheme theme = new WebTheme(new Brand());
+        bundle.putParcelable(WebUiFragment.ARG_WEB_THEME_OVERRIDE, theme);
+
+        fragment.setArguments(bundle);
+
+        String TAG_WEB_FRAGMENT = "TAG_WEB_FRAGMENT";
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(binding.fragmentContainer.getId(), fragment, TAG_WEB_FRAGMENT)
+                .commit();
     }
 }

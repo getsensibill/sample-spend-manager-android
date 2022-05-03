@@ -8,6 +8,8 @@ import com.getsensibill.spendmanager.demo.R
 import com.getsensibill.spendmanager.demo.databinding.ActivityFragmentKotlinBinding
 import com.getsensibill.web.data.UiFinishReason
 import com.getsensibill.web.data.configuration.NavigationIntent
+import com.getsensibill.web.data.configuration.WebTheme
+import com.getsensibill.web.data.models.Brand
 import com.getsensibill.web.ui.WebUiActivity
 import com.getsensibill.web.ui.WebUiFragment
 import com.getsensibill.web.ui.WebUiFragment.Listener
@@ -37,10 +39,9 @@ class FragmentKotlinActivity : AppCompatActivity(),
         binding = ActivityFragmentKotlinBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        onDisplayNetworkError(true)
-//        if (savedInstanceState == null) {
-//            loadWebUi()
-//        }
+        if (savedInstanceState == null) {
+            loadWebUi()
+        }
     }
 
     override fun onBackPressed() {
@@ -121,12 +122,12 @@ class FragmentKotlinActivity : AppCompatActivity(),
     private fun createWebUiFragment(): WebUiFragment = WebUiFragment().apply {
         arguments = Bundle().apply {
             // Pass in a navigation override. Defaults as .DASHBOARD
-            putParcelable(WebUiFragment.ARG_NAVIGATION_OVERRIDE, NavigationIntent.RECEIPT_LIST)
+            putParcelable(WebUiFragment.ARG_NAVIGATION_OVERRIDE, NavigationIntent.DASHBOARD)
             // Pass in a custom Theme override. Defaults to null
-//            putParcelable(
-//                WebUiFragment.ARG_WEB_THEME_OVERRIDE,
-//                WebTheme(Brand())
-//            )
+            putParcelable(
+                WebUiFragment.ARG_WEB_THEME_OVERRIDE,
+                WebTheme(Brand())
+            )
         }
     }
 
