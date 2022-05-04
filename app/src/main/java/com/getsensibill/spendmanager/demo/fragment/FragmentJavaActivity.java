@@ -1,6 +1,7 @@
 package com.getsensibill.spendmanager.demo.fragment;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
 
@@ -52,10 +53,10 @@ public class FragmentJavaActivity extends AppCompatActivity
     @Override
     public void onDisplayNetworkError(boolean networkNotAvailable) {
         // reuses the fragment if it already existed
-        if (getSupportFragmentManager().findFragmentByTag(TAG_WEB_NETWORK_ERROR_FRAGMENT) != null) {
+
+        if (getFragment(TAG_WEB_NETWORK_ERROR_FRAGMENT) != null) {
             setFragment(
-                    (WebUiNetworkErrorFragment)getSupportFragmentManager()
-                            .findFragmentByTag(TAG_WEB_NETWORK_ERROR_FRAGMENT),
+                    (WebUiNetworkErrorFragment) getFragment(TAG_WEB_NETWORK_ERROR_FRAGMENT),
                     TAG_WEB_NETWORK_ERROR_FRAGMENT
             );
             return;
@@ -114,11 +115,8 @@ public class FragmentJavaActivity extends AppCompatActivity
             return;
         }
         // reuses the fragment if it already existed
-        if (getSupportFragmentManager().findFragmentByTag(TAG_WEB_FRAGMENT) != null) {
-            setFragment(
-                    (WebUiFragment)getSupportFragmentManager().findFragmentByTag(TAG_WEB_FRAGMENT),
-                    TAG_WEB_FRAGMENT
-            );
+        if (getFragment(TAG_WEB_FRAGMENT) != null) {
+            setFragment((WebUiFragment) getFragment(TAG_WEB_FRAGMENT), TAG_WEB_FRAGMENT);
             return;
         }
 
@@ -144,5 +142,9 @@ public class FragmentJavaActivity extends AppCompatActivity
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment, TAG)
                 .commit();
+    }
+
+    private Fragment getFragment(String tag) {
+        return getSupportFragmentManager().findFragmentByTag(tag);
     }
 }
