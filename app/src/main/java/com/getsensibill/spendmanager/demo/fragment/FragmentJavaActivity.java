@@ -68,6 +68,16 @@ public class FragmentJavaActivity extends AppCompatActivity
         showFragmentInContainer(fragment, TAG_WEB_NETWORK_ERROR_FRAGMENT);
     }
 
+    @Override
+    public void onBackPressed() {
+        Fragment existingFragment = findFragmentByTag(TAG_WEB_NETWORK_ERROR_FRAGMENT);
+        if (existingFragment instanceof WebUiFragment) {
+            if (((WebUiFragment) existingFragment).shouldNavigateBack()) {
+                super.onBackPressed();
+            }
+        }
+    }
+
     /**
      * Required Override when using [WebUiFragment.Listener]
      * <p>
