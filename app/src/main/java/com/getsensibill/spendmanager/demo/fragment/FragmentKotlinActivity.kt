@@ -47,10 +47,6 @@ class FragmentKotlinActivity : AppCompatActivity(),
         }
     }
 
-    override fun onBackPressed() {
-        if (webFragment?.shouldNavigateBack() != false) super.onBackPressed()
-    }
-
     /**
      * Required Override when using [WebUiFragment.Listener]
      *

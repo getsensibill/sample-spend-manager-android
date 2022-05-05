@@ -15,8 +15,8 @@
         android:theme="@style/Theme.SpendManager.Demo"
         tools:replace="android:allowBackup">
         <activity android:name=".LauncherActivity" />
-        <activity android:name=".direct.DirectJavaActivity" android:theme="@style/Theme.Sensibill" />
-        <activity android:name=".direct.DirectKotlinActivity" android:theme="@style/Theme.Sensibill" />
+        <activity android:name=".direct.DirectJavaActivity" />
+        <activity android:name=".direct.DirectKotlinActivity" />
         <activity android:name=".subclass.SubclassKotlinActivity" android:theme="@style/Theme.Sensibill" />
         <activity android:name=".subclass.SubclassJavaActivity" android:theme="@style/Theme.Sensibill" />
         <activity android:name=".fragment.FragmentKotlinActivity" android:theme="@style/Theme.Sensibill" />

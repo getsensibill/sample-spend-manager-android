@@ -28,8 +28,8 @@ public class FragmentJavaActivity extends AppCompatActivity
         implements WebUiFragment.Listener, WebUiNetworkErrorFragment.Listener {
 
     private ActivityFragmentJavaBinding binding;
-    private final String TAG_WEB_FRAGMENT = "TAG_WEB_FRAGMENT";
-    private final String TAG_WEB_NETWORK_ERROR_FRAGMENT = "TAG_WEB_NETWORK_ERROR_FRAGMENT";
+    private static final String TAG_WEB_FRAGMENT = "TAG_WEB_FRAGMENT";
+    private static final String TAG_WEB_NETWORK_ERROR_FRAGMENT = "TAG_WEB_NETWORK_ERROR_FRAGMENT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,24 +52,20 @@ public class FragmentJavaActivity extends AppCompatActivity
      */
     @Override
     public void onDisplayNetworkError(boolean networkNotAvailable) {
-        // reuses the fragment if it already existed
+        // If the fragment manager already has reference to an error fragment, reuse that instance.
+        // Otherwise, create a fresh one.
+        Fragment existingFragment = findFragmentByTag(TAG_WEB_NETWORK_ERROR_FRAGMENT);
+        WebUiNetworkErrorFragment fragment = existingFragment instanceof WebUiNetworkErrorFragment ?
+                (WebUiNetworkErrorFragment) existingFragment :
+                new WebUiNetworkErrorFragment();
 
-        if (getFragment(TAG_WEB_NETWORK_ERROR_FRAGMENT) != null) {
-            setFragment(
-                    (WebUiNetworkErrorFragment) getFragment(TAG_WEB_NETWORK_ERROR_FRAGMENT),
-                    TAG_WEB_NETWORK_ERROR_FRAGMENT
-            );
-            return;
-        }
-
-        WebUiNetworkErrorFragment fragment = new WebUiNetworkErrorFragment();
-        Bundle bundle = new Bundle();
+        Bundle args = new Bundle();
 
         // If not provided, the fragment assumes that there is no network connection (default: true)
-        bundle.putBoolean(WebUiNetworkErrorFragment.ARG_NO_NETWORK_ERROR, networkNotAvailable);
-        fragment.setArguments(bundle);
+        args.putBoolean(WebUiNetworkErrorFragment.ARG_NO_NETWORK_ERROR, networkNotAvailable);
+        fragment.setArguments(args);
 
-        setFragment(fragment, TAG_WEB_NETWORK_ERROR_FRAGMENT);
+        showFragmentInContainer(fragment, TAG_WEB_NETWORK_ERROR_FRAGMENT);
     }
 
     /**
@@ -111,40 +107,39 @@ public class FragmentJavaActivity extends AppCompatActivity
     }
 
     private void loadWebUi() {
-        if (this.isFinishing()) {
-            return;
+        if (isFinishing()) return;
+
+        Fragment existingFragment = findFragmentByTag(TAG_WEB_FRAGMENT);
+        WebUiFragment fragment = existingFragment instanceof WebUiFragment ?
+                (WebUiFragment) existingFragment :
+                new WebUiFragment();
+
+        if (existingFragment == null) {
+            Bundle bundle = new Bundle();
+            // Pass in a navigation override. Defaults as .DASHBOARD
+            bundle.putParcelable(
+                    WebUiFragment.ARG_NAVIGATION_OVERRIDE,
+                    NavigationIntent.DASHBOARD.INSTANCE
+            );
+
+            // Pass in a custom Theme override. Defaults to null
+            WebTheme theme = new WebTheme(new Brand());
+            bundle.putParcelable(WebUiFragment.ARG_WEB_THEME_OVERRIDE, theme);
+
+            fragment.setArguments(bundle);
         }
-        // reuses the fragment if it already existed
-        if (getFragment(TAG_WEB_FRAGMENT) != null) {
-            setFragment((WebUiFragment) getFragment(TAG_WEB_FRAGMENT), TAG_WEB_FRAGMENT);
-            return;
-        }
 
-        WebUiFragment fragment = new WebUiFragment();
-        Bundle bundle = new Bundle();
-
-        // Pass in a navigation override. Defaults as .DASHBOARD
-        bundle.putParcelable(
-                WebUiFragment.ARG_NAVIGATION_OVERRIDE,
-                NavigationIntent.DASHBOARD.INSTANCE
-        );
-
-        // Pass in a custom Theme override. Defaults to null
-        WebTheme theme = new WebTheme(new Brand());
-        bundle.putParcelable(WebUiFragment.ARG_WEB_THEME_OVERRIDE, theme);
-
-        fragment.setArguments(bundle);
-        setFragment(fragment, TAG_WEB_FRAGMENT);
+        showFragmentInContainer(fragment, TAG_WEB_FRAGMENT);
     }
 
-    private void setFragment(SbBaseFragment fragment, String TAG) {
+    private void showFragmentInContainer(SbBaseFragment fragment, String tag) {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container, fragment, TAG)
+                .replace(R.id.fragment_container, fragment, tag)
                 .commit();
     }
 
-    private Fragment getFragment(String tag) {
+    private Fragment findFragmentByTag(String tag) {
         return getSupportFragmentManager().findFragmentByTag(tag);
     }
 }
