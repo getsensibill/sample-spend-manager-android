@@ -75,6 +75,8 @@ public class FragmentJavaActivity extends AppCompatActivity
             if (((WebUiFragment) existingFragment).shouldNavigateBack()) {
                 super.onBackPressed();
             }
+        } else {
+            super.onBackPressed();
         }
     }
 
