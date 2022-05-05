@@ -70,7 +70,7 @@ public class FragmentJavaActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        Fragment existingFragment = findFragmentByTag(TAG_WEB_NETWORK_ERROR_FRAGMENT);
+        Fragment existingFragment = findFragmentByTag(TAG_WEB_FRAGMENT);
         if (existingFragment instanceof WebUiFragment) {
             if (((WebUiFragment) existingFragment).shouldNavigateBack()) {
                 super.onBackPressed();
