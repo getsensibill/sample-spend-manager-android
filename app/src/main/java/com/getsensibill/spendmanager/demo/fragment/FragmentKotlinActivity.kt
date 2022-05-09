@@ -2,12 +2,15 @@ package com.getsensibill.spendmanager.demo.fragment
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.annotation.IdRes
 import androidx.fragment.app.commit
+import com.getsensibill.spendmanager.demo.R
 import com.getsensibill.spendmanager.demo.databinding.ActivityFragmentKotlinBinding
 import com.getsensibill.web.data.UiFinishReason
 import com.getsensibill.web.data.configuration.NavigationIntent
 import com.getsensibill.web.data.configuration.WebTheme
 import com.getsensibill.web.data.models.Brand
+import com.getsensibill.web.ui.WebUiActivity
 import com.getsensibill.web.ui.WebUiFragment
 import com.getsensibill.web.ui.WebUiFragment.Listener
 import com.getsensibill.web.ui.WebUiNetworkErrorFragment
@@ -19,30 +22,33 @@ import com.getsensibill.web.ui.WebUiNetworkErrorFragment
  * Also, please use, or see [WebUiNetworkErrorFragment] as reference for what to display when
  * [Listener.onDisplayNetworkError] is called.
  */
-class FragmentKotlinActivity : AppCompatActivity(), WebUiFragment.Listener {
+class FragmentKotlinActivity : AppCompatActivity(),
+    WebUiFragment.Listener, WebUiNetworkErrorFragment.Listener {
+
     private lateinit var binding: ActivityFragmentKotlinBinding
+
+    @IdRes
+    private val webContainerId: Int = R.id.fragment_container
+
+    /** The instance of [WebUiFragment] that is being displayed by the activity */
+    private val webFragment: WebUiFragment?
+        get() = supportFragmentManager.findFragmentByTag(TAG_WEB_FRAGMENT) as? WebUiFragment
+
+    private val errorFragment: WebUiNetworkErrorFragment?
+        get() = supportFragmentManager.findFragmentByTag(TAG_WEB_NETWORK_ERROR_FRAGMENT) as? WebUiNetworkErrorFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFragmentKotlinBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if(savedInstanceState == null) {
-            val fragment = WebUiFragment().apply {
-                arguments = Bundle().apply {
-                    // Pass in a navigation override. Defaults as .DASHBOARD
-                    putParcelable(WebUiFragment.ARG_NAVIGATION_OVERRIDE, NavigationIntent.DASHBOARD)
-                    // Pass in a custom Theme override. Defaults to null
-                    putParcelable(
-                        WebUiFragment.ARG_WEB_THEME_OVERRIDE,
-                        WebTheme(Brand())
-                    )
-                }
-            }
-            supportFragmentManager.commit {
-                replace(binding.fragmentContainer.id, fragment, "FRAGMENT_TAG")
-            }
+        if (savedInstanceState == null) {
+            loadWebUi()
         }
+    }
+
+    override fun onBackPressed() {
+        if (webFragment?.shouldNavigateBack() != false) super.onBackPressed()
     }
 
     /**
@@ -53,14 +59,16 @@ class FragmentKotlinActivity : AppCompatActivity(), WebUiFragment.Listener {
      * own fragment or even an alternative logic flow if desired.
      */
     override fun onDisplayNetworkError(networkNotAvailable: Boolean) {
-        supportFragmentManager.commit {
-            val fragment = WebUiNetworkErrorFragment().apply {
+        if (isFinishing) return
+        supportFragmentManager.commit(true) {
+            val fragment = errorFragment ?: WebUiNetworkErrorFragment()
+            fragment.apply {
                 arguments = Bundle().apply {
                     // If not provided, the fragment assumes that there is no network connection (default: true)
-                    putBoolean(WebUiNetworkErrorFragment.ARG_NO_NETWORK_ERROR, true)
+                    putBoolean(WebUiNetworkErrorFragment.ARG_NO_NETWORK_ERROR, networkNotAvailable)
                 }
             }
-            replace(binding.fragmentContainer.id, fragment, "NETWORK_ERROR_FRAGMENT_TAG")
+            replace(webContainerId, fragment, TAG_WEB_NETWORK_ERROR_FRAGMENT)
         }
     }
 
@@ -73,5 +81,62 @@ class FragmentKotlinActivity : AppCompatActivity(), WebUiFragment.Listener {
      */
     override fun onRequestFinish(reason: UiFinishReason) {
         finish()
+    }
+
+    // -----WebUiNetworkErrorFragment.Listener Overrides -----
+    /**
+     * Required Override when using [WebUiNetworkErrorFragment.Listener]
+     *
+     * This is the returning call from the [WebUiNetworkErrorFragment] when the retry button is
+     * pressed. If using a fragment integration and not subclassing [WebUiActivity], then the
+     * error view will not know how to handle the event.
+     */
+    override fun onNetworkErrorRetry() {
+        loadWebUi()
+    }
+
+    /**
+     * Required Override when using [WebUiNetworkErrorFragment.Listener]
+     *
+     * This is the returning call from the [WebUiNetworkErrorFragment] when the ok/close button is
+     * pressed. If using a fragment integration and not subclassing [WebUiActivity], then the
+     * error view will not know how to handle the event.
+     */
+    override fun onNetworkErrorClose() {
+        onRequestFinish(UiFinishReason.UNABLE_TO_LOAD_SPA)
+    }
+
+
+    private fun loadWebUi() {
+        if (isFinishing) return
+        supportFragmentManager.commit {
+            replace(
+                webContainerId,
+                webFragment ?: createWebUiFragment(),
+                TAG_WEB_FRAGMENT
+            )
+        }
+    }
+
+    /**
+     * When creating the [WebUiFragment], you can either return the fragment back directly,
+     * or override arguments using the apply block. Here is an example of overriding the
+     * [WebUiFragment.ARG_NAVIGATION_OVERRIDE] and [WebUiFragment.ARG_WEB_THEME_OVERRIDE] arguments.
+     */
+    private fun createWebUiFragment(): WebUiFragment = WebUiFragment().apply {
+        arguments = Bundle().apply {
+            // Pass in a navigation override. Defaults as .DASHBOARD
+            putParcelable(WebUiFragment.ARG_NAVIGATION_OVERRIDE, NavigationIntent.DASHBOARD)
+            // Pass in a custom Theme override. Defaults to null
+            putParcelable(
+                WebUiFragment.ARG_WEB_THEME_OVERRIDE,
+                WebTheme(Brand())
+            )
+        }
+    }
+
+    companion object {
+        private const val TAG_WEB_FRAGMENT = "TAG_WEB_FRAGMENT"
+        private const val TAG_WEB_NETWORK_ERROR_FRAGMENT = "TAG_WEB_NETWORK_ERROR_FRAGMENT"
     }
 }
