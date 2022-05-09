@@ -27,9 +27,10 @@ import org.jetbrains.annotations.NotNull;
 public class FragmentJavaActivity extends AppCompatActivity
         implements WebUiFragment.Listener, WebUiNetworkErrorFragment.Listener {
 
-    private ActivityFragmentJavaBinding binding;
     private static final String TAG_WEB_FRAGMENT = "TAG_WEB_FRAGMENT";
     private static final String TAG_WEB_NETWORK_ERROR_FRAGMENT = "TAG_WEB_NETWORK_ERROR_FRAGMENT";
+
+    private ActivityFragmentJavaBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +78,7 @@ public class FragmentJavaActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
-    
+
     /**
      * Required Override when using [WebUiFragment.Listener]
      * <p>
