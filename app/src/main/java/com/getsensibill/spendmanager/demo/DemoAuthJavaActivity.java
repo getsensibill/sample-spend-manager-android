@@ -174,7 +174,7 @@ public class DemoAuthJavaActivity extends AppCompatActivity {
         SensibillSDK.getInstance().initialize(builder.build(), new SDKInitializeListener() {
             @Override
             public void onInitialized() {
-                startSDK("userIdentifierFromToken");
+                startSDK(AuthConfig.INSTANCE.getTokenOwnersUserIdentifier());
             }
 
             @Override
@@ -253,7 +253,7 @@ public class DemoAuthJavaActivity extends AppCompatActivity {
         SensibillAuth.SessionListener sessionListener = new SensibillAuth.SessionListener() {
             @Override
             public void onSuccess(@NonNull OauthSession oauthSession) {
-                startSDK("userIdentifierFromSignIn");
+                startSDK(username);
             }
 
             @Override
