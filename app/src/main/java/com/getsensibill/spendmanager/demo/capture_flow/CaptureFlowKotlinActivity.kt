@@ -31,11 +31,20 @@ class CaptureFlowKotlinActivity : AppCompatActivity() {
                     is CaptureFlowState.ImagesCaptured -> "Images are captured"
                     is CaptureFlowState.FLOW_CANCELLED -> "Capture flow cancelled"
                     is CaptureFlowState.Error -> "Error occurred: ${newState.exception.message}"
+                    // **ONLY APPLICABLE IF CONFIGURED USING API V1 (RECEIPTS) ENDPOINTS**
                     is CaptureFlowState.Transacting -> {
                         val transaction = with(newState.transaction) {
                             "status:$status\nlocalId:$localId\ntxnId:$transactionId\nreceiptId:$receiptId"
                         }
                         "Transacting\n$transaction\n(savedExtTxnId:$externalAccountTransactionId)"
+                    }
+                    // **ONLY APPLICABLE IF CONFIGURED USING API V2 (DOCUMENTS) ENDPOINTS**
+                    is CaptureFlowState.DocumentUploading -> {
+                        // Handle document upload progress updates that will occur after the image has been captured and the
+                        // Document is uploading
+                        val update = newState.update
+                        val status = update.status
+                        "DocumentUploading(documentId${update.documentId}, status:$status):\n$update"
                     }
                 }
                 binding.progressText.appendOnNewLine("${Date()}: $text")

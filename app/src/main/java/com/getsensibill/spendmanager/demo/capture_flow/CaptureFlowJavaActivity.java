@@ -1,14 +1,14 @@
 package com.getsensibill.spendmanager.demo.capture_flow;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.getsensibill.captureflow.coordinator.CaptureFlowCoordinator;
 import com.getsensibill.captureflow.coordinator.CaptureFlowState;
-import com.getsensibill.capturestandalone.models.CaptureConfig;
+import com.getsensibill.core.analytic.DocumentUploadUpdateData;
 import com.getsensibill.core.analytic.Transaction;
+import com.getsensibill.core.documents.DocumentStatus;
 import com.getsensibill.spendmanager.demo.databinding.ActivityCaptureFlowJavaBinding;
 
 import org.jetbrains.annotations.NotNull;
@@ -50,6 +50,8 @@ public class CaptureFlowJavaActivity extends AppCompatActivity {
                 text += "Error occurred: " + error.getMessage();
 
             } else if (newState instanceof  CaptureFlowState.Transacting) {
+                // **ONLY APPLICABLE IF CONFIGURED USING API V1 (RECEIPTS) ENDPOINTS**
+
                 // Handle receipt upload transaction updates that will occur after the image has been captured
                 // and the receipt is uploading
                 final CaptureFlowState.Transacting transactingState = ((CaptureFlowState.Transacting) newState);
@@ -61,6 +63,18 @@ public class CaptureFlowJavaActivity extends AppCompatActivity {
                 text += "\nntxnId: " + transaction.getTransactionId();
                 text += "\nnreceiptId: " + transaction.getReceiptId();
                 text += "\n(savedExtTxnId: " + externalAccountTransactionId + ")";
+            } else if (newState instanceof  CaptureFlowState.DocumentUploading) {
+                // **ONLY APPLICABLE IF CONFIGURED USING API V2 (DOCUMENTS) ENDPOINTS**
+
+                // Handle document upload progress updates that will occur after the image has been captured and the
+                // Document is uploading
+                DocumentUploadUpdateData update = ((CaptureFlowState.DocumentUploading) newState).getUpdate();
+                DocumentStatus status = update.getStatus();
+                text += "DocumentUploading";
+                text += "(documentId" + update.getDocumentId();
+                text += ", status:" + status;
+                text += "):\n";
+                text += update.toString();
             }
 
             String finalText = text;

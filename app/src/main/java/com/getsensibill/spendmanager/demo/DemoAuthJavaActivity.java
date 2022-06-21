@@ -11,18 +11,20 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.getsensibill.core.CoreState;
 import com.getsensibill.core.InitializationBuilder;
-import com.getsensibill.core.Initializer;
 import com.getsensibill.core.LoginError;
 import com.getsensibill.core.SDKInitializeListener;
 import com.getsensibill.core.SDKStartup;
 import com.getsensibill.core.SensibillSDK;
-import com.getsensibill.oauthclient.OAuthSettings;
-import com.getsensibill.oauthclient.OauthSession;
+import com.getsensibill.rest.client.v1.oauth.OAuthSettings;
+import com.getsensibill.rest.client.v1.oauth.OauthSession;
 import com.getsensibill.sensibillauth.SensibillAuth;
 import com.getsensibill.sensibillauth.SensibillAuthBuilder;
 import com.getsensibill.spendmanager.demo.databinding.ActivityDemoAuthBinding;
+import com.getsensibill.spendmanager.demo.mockservices.MockIntegrationServerService;
 import com.getsensibill.tokenprovider.TokenProvider;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 import timber.log.Timber;
 
 public class DemoAuthJavaActivity extends AppCompatActivity {
@@ -81,6 +83,7 @@ public class DemoAuthJavaActivity extends AppCompatActivity {
         });
     }
 
+    // ========== SDK Startup Tools ==========
     /**
      * If the SDK is not yet started, we will follow these steps:
      * * Initialize the SDK
@@ -103,8 +106,88 @@ public class DemoAuthJavaActivity extends AppCompatActivity {
         }
     }
 
+    // ========== SDK Initialization ==========
+    /**
+     * Initialize the Sensibill SDK, using a hardcoded token for authentication.
+     * This method is recommended for integrators.
+     *
+     * - Create an `Initializer` with the required configuration for the SDK
+     * - Create and provide a `TokenProvider` which will provide a token (for this demo,
+     *   [privateToken]) to the SDK when it requests it
+     * - Initialize the SDK
+     * - Upon initialization, start the SDK
+     */
+    private void initializeSDKWithToken() {
+        Timber.i("For the demo, we are just releasing the SDK on every run through.");
+        SensibillSDK.getInstance().release();
+
+        // Create a token provider that will just be used to provide the `AuthConfig` token.  If using an integration
+        // server for providing tokens, this token provider is called when the SDK requires a (new) auth token.
+        final TokenProvider tokenProvider = new TokenProvider() {
+            @Override
+            public void provideTokenReplacement(@Nullable String oldAuthToken, @NonNull String userIdentifier, @NonNull OnTokenProviderListener onTokenProviderListener) {
+                // On token retrieved callback
+                Function1<String, Unit> onTokenRetrieved = new Function1<>() {
+                    @Override
+                    public Unit invoke(String newToken) {
+                        onTokenProviderListener.onTokenProvided(newToken);
+                        return null;
+                    }
+                };
+
+                // On failure to fetch token callback
+                Function1<String, Unit> onFailureToFetchToken = new Function1<>() {
+                    @Override
+                    public Unit invoke(String error) {
+                        onTokenProviderListener.onFailed(error);
+                        return null;
+                    }
+                };
+
+                // Call the service to request a new access token
+                MockIntegrationServerService.INSTANCE.fetchNewAccessToken(
+                        userIdentifier,
+                        onTokenRetrieved,
+                        onFailureToFetchToken
+                );
+            }
+        };
+
+        // Creates the builder for the SDK Initializer
+        // Provide a Token Provider to SDK initializer.  This token provider will be called when the
+        // SDK starts, as well as if the token expires while the SDK is in use.
+        // The token provider _must_ be provided in the `Initializer`, however it will not be used
+        // until `SensibillSDK.start` is called.
+        InitializationBuilder builder = new InitializationBuilder(
+                this,
+                AuthConfig.INSTANCE.getEnvironment(),
+                tokenProvider
+        );
+
+        // See `AuthConfig.sampleCustomEnvironment` to see how to build your own environment, if accessing the Sensibill
+        // APIs via a proxy server
+
+        // Certificate pinning can be enabled or disabled at this step
+        // builder.certificatePinning(true);
+
+        // Initialize the SDK
+        SensibillSDK.getInstance().initialize(builder.build(), new SDKInitializeListener() {
+            @Override
+            public void onInitialized() {
+                startSDK("userIdentifierFromToken");
+            }
+
+            @Override
+            public void onInitializationFailed() {
+                showToast("Failed to initialize the SDK. Please make sure you have set the correct variables in AuthConfig, and have an active internet connection.");
+                onLoadingStateChanged(false);
+            }
+        });
+    }
+
     /**
      * Initialize the Sensibill SDK, using username / password authentication.
+     * THIS METHOD IS NOT RECOMMENDED FOR INTEGRATORS
      *
      * - Create a `SensibillAuth`, which will be used for username/password authentication
      * - Create an `Initializer` with the required configuration for the SDK
@@ -131,69 +214,25 @@ public class DemoAuthJavaActivity extends AppCompatActivity {
         SensibillAuth sensibillAuth = new SensibillAuthBuilder(this, AuthConfig.INSTANCE.getEnvironment(), oAuthSettings)
                 .build();
 
-        // Creates the builder for the SDK Initializer
-        InitializationBuilder builder = new InitializationBuilder(this, AuthConfig.INSTANCE.getEnvironment());
-
         // If using username / password auth, use the `TokenProvider` provided by `SensibillAuth`
         TokenProvider tokenProvider = sensibillAuth.getTokenProvider();
 
+        // Creates the builder for the SDK Initializer
         // Provide a Token Provider to SDK initializer.  This token provider will be called when the
         // SDK starts, as well as if the token expires while the SDK is in use.
         // The token provider _must_ be provided in the `Initializer`, however it will not be used
         // until `SensibillSDK.start` is called.
-        builder.authTokenProvider(tokenProvider);
+        InitializationBuilder builder = new InitializationBuilder(
+                this,
+                AuthConfig.INSTANCE.getEnvironment(),
+                tokenProvider
+        );
 
         // Initialize the SDK
         SensibillSDK.getInstance().initialize(builder.build(), new SDKInitializeListener() {
             @Override
             public void onInitialized() {
                 authenticate(sensibillAuth, AuthConfig.INSTANCE.getUsername(), AuthConfig.INSTANCE.getPassword());
-            }
-
-            @Override
-            public void onInitializationFailed() {
-                showToast("Failed to initialize the SDK. Please make sure you have set the correct variables in AuthConfig, and have an active internet connection.");
-                onLoadingStateChanged(false);
-            }
-        });
-    }
-
-    /**
-     * Initialize the Sensibill SDK, using a hardcoded token for authentication.
-     *
-     * - Create an `Initializer` with the required configuration for the SDK
-     * - Create and provide a `TokenProvider` which will provide a token (for this demo,
-     *   [privateToken]) to the SDK when it requests it
-     * - Initialize the SDK
-     * - Upon initialization, start the SDK
-     */
-    private void initializeSDKWithToken() {
-        Timber.i("For the demo, we are just releasing the SDK on every run through.");
-        SensibillSDK.getInstance().release();
-
-        // Creates the builder for the SDK Initializer
-        InitializationBuilder builder = new InitializationBuilder(this, AuthConfig.INSTANCE.getEnvironment());
-
-        // Create a token provider that will just be used to provide the `AuthConfig` token.  If using an integration
-        // server for providing tokens, this token provider is called when the SDK requires a (new) auth token.
-        final TokenProvider tokenProvider = new TokenProvider() {
-            @Override
-            public void provideTokenReplacement(@Nullable String s, @NonNull String s1, @NonNull OnTokenProviderListener onTokenProviderListener) {
-                onTokenProviderListener.onTokenProvided(AuthConfig.INSTANCE.getPrivateToken());
-            }
-        };
-
-        // Provide a Token Provider to SDK initializer.  This token provider will be called when the
-        // SDK starts, as well as if the token expires while the SDK is in use.
-        // The token provider _must_ be provided in the `Initializer`, however it will not be used
-        // until `SensibillSDK.start` is called.
-        Initializer initializer = builder.authTokenProvider(tokenProvider).build();
-
-        // Initialize the SDK
-        SensibillSDK.getInstance().initialize(initializer, new SDKInitializeListener() {
-            @Override
-            public void onInitialized() {
-                startSDK("userIdentifierFromToken");
             }
 
             @Override
@@ -226,6 +265,7 @@ public class DemoAuthJavaActivity extends AppCompatActivity {
         auth.signIn(username, password, sessionListener);
     }
 
+    // ========== Starting the SDK ==========
     /**
      * Starts the SDK. Important to remember that the SDK needs
      * to have been initialized first.
@@ -251,6 +291,7 @@ public class DemoAuthJavaActivity extends AppCompatActivity {
         });
     }
 
+    // ========== Continuation After SDK Startup ==========
     /**
      * Will navigate to the launcher activity, where the user can test out different
      * integration methods.
@@ -265,6 +306,12 @@ public class DemoAuthJavaActivity extends AppCompatActivity {
         // Creates the intent and launches it.
         Intent intent = new Intent(this, LauncherActivity.class);
         startActivity(intent);
+    }
+
+    // ========== Tools ==========
+    /** Helper function to show toasts. */
+    private void showToast(@NonNull String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     private void onLoadingStateChanged(boolean isLoading) { onLoadingStateChanged(isLoading, null); }
@@ -287,11 +334,6 @@ public class DemoAuthJavaActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    /** Helper function to show toasts. */
-    private void showToast(@NonNull String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     private boolean checkCredentialsSet(@NonNull String... requiredCredentials) {

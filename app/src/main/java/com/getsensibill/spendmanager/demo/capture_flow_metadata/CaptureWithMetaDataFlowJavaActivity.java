@@ -5,7 +5,9 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.getsensibill.capturestandalone.models.CaptureConfig;
+import com.getsensibill.capturestandalone.config.CaptureConfig;
+import com.getsensibill.capturestandalone.config.CaptureDocumentType;
+import com.getsensibill.capturestandalone.config.DocumentTypeStrings;
 import com.getsensibill.capturestandalone.models.FlashMode;
 import com.getsensibill.web.ui.CaptureWithMetadataFlowActivity;
 
@@ -39,7 +41,9 @@ public class CaptureWithMetaDataFlowJavaActivity extends AppCompatActivity {
                 false,
                 true,
                 true,
-                true
+                true,
+                DocumentTypeStrings.Companion.getDefaultReceiptStrings(),
+                CaptureDocumentType.RECEIPT
         );
         intent.putExtra(CaptureWithMetadataFlowActivity.ARG_CAPTURE_CONFIG, captureConfig);
 
