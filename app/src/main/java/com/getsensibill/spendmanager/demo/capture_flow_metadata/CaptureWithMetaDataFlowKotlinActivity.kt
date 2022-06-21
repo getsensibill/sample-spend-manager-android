@@ -3,7 +3,7 @@ package com.getsensibill.spendmanager.demo.capture_flow_metadata
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.getsensibill.capturestandalone.models.CaptureConfig
+import com.getsensibill.capturestandalone.config.CaptureConfig
 import com.getsensibill.web.ui.CaptureWithMetadataFlowActivity
 
 /**
@@ -18,7 +18,7 @@ class CaptureWithMetaDataFlowKotlinActivity : AppCompatActivity() {
         val intent = Intent(this, CaptureWithMetadataFlowActivity::class.java)
 
         // copies the default capture config, disables long capture for demo
-        val captureConfig = CaptureConfig.defaultConfig.copy(enableLongCapture = false)
+        val captureConfig = CaptureConfig.defaultReceiptCaptureConfig.copy(enableLongCapture = false)
 
         intent.putExtra(CaptureWithMetadataFlowActivity.ARG_CAPTURE_CONFIG, captureConfig)
 
