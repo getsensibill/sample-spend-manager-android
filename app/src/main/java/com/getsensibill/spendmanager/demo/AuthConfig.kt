@@ -2,6 +2,8 @@ package com.getsensibill.spendmanager.demo
 
 import com.getsensibill.rest.network.DefaultEnvironment
 import com.getsensibill.rest.network.SBEnvironment
+import com.getsensibill.rest.network.defaultV1BaseUrl
+import com.getsensibill.rest.network.defaultV2BaseUrl
 
 object AuthConfig {
     // ========== Auth Configurations - used for demo app authentication ==========
@@ -26,17 +28,14 @@ object AuthConfig {
     /** A sample fully custom environment */
     val sampleCustomEnvironment: SBEnvironment = object : SBEnvironment {
         // Provide URL information
-        override fun getHostName(): String = "my.custom.env"
-        override fun getV1BaseUrl(): String = determineBaseUrl("1")
-        override fun getV2BaseUrl(): String = determineBaseUrl("2")
+        override val hostName: String = "my.custom.env"
+        override val v1BaseUrl: String = defaultV1BaseUrl()
+        override val v2BaseUrl: String = defaultV2BaseUrl()
 
         // Add a list of certificate pins if certificate pinning is required
-        override fun getCertificatePins(): MutableList<String> = mutableListOf()
+        override val certificatePins: List<String> = listOf()
 
         // In any realistic case this should always be true
-        override fun hasHttps(): Boolean = true
-
-        private fun determineBaseUrl(apiVersion: String) =
-            "${if (hasHttps()) "https" else "http"}://$hostName/api/v$apiVersion/"
+        override val hasHttps: Boolean = true
     }
 }
