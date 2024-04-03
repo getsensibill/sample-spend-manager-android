@@ -19,3 +19,31 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-dontwarn javax.persistence.Basic
+-dontwarn javax.persistence.Column
+-dontwarn javax.persistence.Entity
+-dontwarn javax.persistence.EnumType
+-dontwarn javax.persistence.Enumerated
+-dontwarn javax.persistence.FetchType
+-dontwarn javax.persistence.GeneratedValue
+-dontwarn javax.persistence.Id
+-dontwarn javax.persistence.JoinColumn
+-dontwarn javax.persistence.ManyToOne
+-dontwarn javax.persistence.OneToOne
+-dontwarn javax.persistence.Table
+-dontwarn javax.persistence.Version
+-dontwarn org.bouncycastle.jsse.BCSSLParameters
+-dontwarn org.bouncycastle.jsse.BCSSLSocket
+-dontwarn org.bouncycastle.jsse.provider.BouncyCastleJsseProvider
+-dontwarn org.conscrypt.Conscrypt$Version
+-dontwarn org.conscrypt.Conscrypt
+-dontwarn org.conscrypt.ConscryptHostnameVerifier
+-dontwarn org.openjsse.javax.net.ssl.SSLParameters
+-dontwarn org.openjsse.javax.net.ssl.SSLSocket
+-dontwarn org.openjsse.net.ssl.OpenJSSE
+
+-dontwarn retrofit2.**
+-keep class retrofit2.** { *; }
+-keepattributes Signature
+-keepattributes Exceptions
