@@ -9,13 +9,13 @@ import com.getsensibill.oauthclient.OAuthSettings
 import com.getsensibill.oauthclient.OauthSession
 import com.getsensibill.sensibillauth.SensibillAuth
 import com.getsensibill.sensibillauth.SensibillAuthBuilder
-import com.getsensibill.spendmanager.demo.AuthConfig.PROVIDED_BY_SENSIBILL
+import com.getsensibill.spendmanager.demo.AuthConfig.PLACEHOLDER
 import com.getsensibill.spendmanager.demo.AuthConfig.apiKey
 import com.getsensibill.spendmanager.demo.AuthConfig.apiSecret
 import com.getsensibill.spendmanager.demo.AuthConfig.credentialType
 import com.getsensibill.spendmanager.demo.AuthConfig.environment
 import com.getsensibill.spendmanager.demo.AuthConfig.password
-import com.getsensibill.spendmanager.demo.AuthConfig.privateToken
+import com.getsensibill.spendmanager.demo.AuthConfig.userAccessToken
 import com.getsensibill.spendmanager.demo.AuthConfig.redirectURL
 import com.getsensibill.spendmanager.demo.AuthConfig.username
 import com.getsensibill.spendmanager.demo.databinding.ActivityDemoAuthBinding
@@ -36,7 +36,7 @@ class DemoAuthActivity : AppCompatActivity() {
             progress.hide()
 
             loginWithToken.setOnClickListener {
-                if(!checkCredentialsSet(privateToken)) {
+                if(!checkCredentialsSet(userAccessToken)) {
                     showToast("Please set your token before running the demo. Check DemoAuthActivity and AuthConfig")
                 } else {
                     login(withToken = true)
@@ -69,6 +69,7 @@ class DemoAuthActivity : AppCompatActivity() {
      * If the SDK is already running, we can go directly to the launcher activity
      */
     private fun login(withToken: Boolean) {
+        Timber.d("=== Starting kotlin")
         onLoadingStateChanged(true)
         if (SensibillSDK.getState() != CoreState.STARTED) {
             initializeSDK(withToken = withToken)
@@ -83,7 +84,7 @@ class DemoAuthActivity : AppCompatActivity() {
      * **If using a token directly:**
      * - Create an `Initializer` with the required configuration for the SDK
      * - Create and provide a `TokenProvider` which will provide a token (for this demo,
-     *   [privateToken]) to the SDK when it requests it
+     *   [userAccessToken]) to the SDK when it requests it
      * - Initialize the SDK
      * - Upon initialization, start the SDK
      *
@@ -110,7 +111,7 @@ class DemoAuthActivity : AppCompatActivity() {
             // a lambda.  If using an integration server for providing tokens, this token provider
             // is called when the SDK requires a (new) auth token.
             val tokenProvider = TokenProvider.fromLambda { _, _, listener ->
-                listener.onTokenProvided(privateToken)
+                listener.onTokenProvided(userAccessToken)
             }
 
             // Provide a Token Provider to SDK initializer.  This token provider will be called when the
@@ -124,6 +125,7 @@ class DemoAuthActivity : AppCompatActivity() {
         } else {
             // creates an auth settings based on the key, secret, credential type and a possible redirect
             val oAuthSettings = OAuthSettings(apiKey, apiSecret, credentialType, redirectURL, false)
+            Timber.d("=== kotlin ${oAuthSettings.apiKey} ${oAuthSettings.apiSecret} ${oAuthSettings.credentialType} ${environment}")
 
             // builds the SensibillAuth object using the auth settings and environment
             val sensibillAuth = SensibillAuthBuilder(this, environment, oAuthSettings).build()
@@ -231,5 +233,5 @@ class DemoAuthActivity : AppCompatActivity() {
     }
 
     private fun checkCredentialsSet(vararg requiredCredentials: String): Boolean =
-        requiredCredentials.all { it.isNotBlank() && it != PROVIDED_BY_SENSIBILL }
+        requiredCredentials.all { it.isNotBlank() && it != PLACEHOLDER }
 }

@@ -44,7 +44,7 @@ public class DemoAuthJavaActivity extends AppCompatActivity {
         binding.loginWithToken.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!checkCredentialsSet(AuthConfig.INSTANCE.getPrivateToken())) {
+                if (!checkCredentialsSet(AuthConfig.INSTANCE.getUserAccessToken())) {
                     showToast("Please set your token before running the demo. Check DemoAuthJavaActivity and AuthConfig");
                 } else {
                     login(true);
@@ -91,6 +91,7 @@ public class DemoAuthJavaActivity extends AppCompatActivity {
      * If the SDK is already running, we can go directly to the launcher activity
      */
     private void login(boolean withToken) {
+        Timber.d("=== Starting java");
         onLoadingStateChanged(true);
         if (SensibillSDK.getInstance().getState() != CoreState.STARTED) {
             if (withToken) {
@@ -179,7 +180,7 @@ public class DemoAuthJavaActivity extends AppCompatActivity {
         final TokenProvider tokenProvider = new TokenProvider() {
             @Override
             public void provideTokenReplacement(@Nullable String s, @NonNull String s1, @NonNull OnTokenProviderListener onTokenProviderListener) {
-                onTokenProviderListener.onTokenProvided(AuthConfig.INSTANCE.getPrivateToken());
+                onTokenProviderListener.onTokenProvided(AuthConfig.INSTANCE.getUserAccessToken());
             }
         };
 
@@ -297,7 +298,7 @@ public class DemoAuthJavaActivity extends AppCompatActivity {
     private boolean checkCredentialsSet(@NonNull String... requiredCredentials) {
         boolean allValid = true;
         for (String credential : requiredCredentials) {
-            boolean isValid = !credential.equals(AuthConfig.PROVIDED_BY_SENSIBILL) && !credential.isEmpty();
+            boolean isValid = !credential.equals(AuthConfig.PLACEHOLDER) && !credential.isEmpty();
             if (!isValid) {
                 allValid = false;
                 break;
