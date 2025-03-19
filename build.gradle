@@ -16,7 +16,7 @@ allprojects {
         google()
         mavenCentral()
         maven {
-            url 'https://maven.getsensibill.com'
+            url 'https://maven.pkg.github.com/getsensibill/sdk-android'
             credentials {
                 username 'TO BE PROVIDED BY SENSIBILL'
                 password 'TO BE PROVIDED BY SENSIBILL'
