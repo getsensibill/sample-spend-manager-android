@@ -30,10 +30,32 @@ App demonstrates 2 authentication methods:
 To configure a desired method:
 
 1. Open `AuthConfig.kt` (in folder `./app/src/main/java/com/getsensibill/spendmanager/demo`).
+
 2. Make sure the value selected for the `environment` variable corresponds the environment for which the username or access token you are about to provide were created.
+
+    ```kotlin
+    // TODO: Verify that the correct environment is selected.
+    var environment = ...
+    ```
+
 3. Provide authentication parameters:
    * When using the authentication method with username and password, provide username/password, API key/secret, and the credentials type.
        All values are provided by Sensibill.
+
+      ```kotlin
+        // TODO: Set your username/password, API key/secret, and credentials type before running.
+        var username = PLACEHOLDER
+        var password = PLACEHOLDER
+        var apiKey = PLACEHOLDER
+        var apiSecret = PLACEHOLDER
+        var credentialType = PLACEHOLDER
+      ```
+
    * When using the User Access Token authentication method, provide the access token.
+
+      ```kotlin
+        // TODO: Set the user access token before running.
+        var userAccessToken = PLACEHOLDER
+      ```
 
 See ***Get Started*** guide in the SDK documentation for more details on SDK startup configuration and authentication options.
