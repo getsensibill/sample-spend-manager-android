@@ -69,7 +69,6 @@ class DemoAuthActivity : AppCompatActivity() {
      * If the SDK is already running, we can go directly to the launcher activity
      */
     private fun login(withToken: Boolean) {
-        Timber.d("=== Starting kotlin")
         onLoadingStateChanged(true)
         if (SensibillSDK.getState() != CoreState.STARTED) {
             initializeSDK(withToken = withToken)
@@ -125,7 +124,6 @@ class DemoAuthActivity : AppCompatActivity() {
         } else {
             // creates an auth settings based on the key, secret, credential type and a possible redirect
             val oAuthSettings = OAuthSettings(apiKey, apiSecret, credentialType, redirectURL, false)
-            Timber.d("=== kotlin ${oAuthSettings.apiKey} ${oAuthSettings.apiSecret} ${oAuthSettings.credentialType} ${environment}")
 
             // builds the SensibillAuth object using the auth settings and environment
             val sensibillAuth = SensibillAuthBuilder(this, environment, oAuthSettings).build()

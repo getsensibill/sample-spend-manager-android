@@ -91,7 +91,6 @@ public class DemoAuthJavaActivity extends AppCompatActivity {
      * If the SDK is already running, we can go directly to the launcher activity
      */
     private void login(boolean withToken) {
-        Timber.d("=== Starting java");
         onLoadingStateChanged(true);
         if (SensibillSDK.getInstance().getState() != CoreState.STARTED) {
             if (withToken) {
