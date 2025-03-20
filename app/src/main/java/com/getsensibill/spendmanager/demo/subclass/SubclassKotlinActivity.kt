@@ -76,6 +76,7 @@ class SubclassKotlinActivity : WebUiActivity(), WebUiFragment.Listener {
      * should handle the back pressed normally. Also note, that if you need direct access to
      * activity.onBackPressed, we have [activityOnBackPressed] convenience method you can call.
      */
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         if (webFragment?.shouldNavigateBack() != false) activityOnBackPressed()
     }

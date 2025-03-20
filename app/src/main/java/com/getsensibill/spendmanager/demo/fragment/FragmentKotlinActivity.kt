@@ -47,6 +47,7 @@ class FragmentKotlinActivity : AppCompatActivity(),
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         if (webFragment?.shouldNavigateBack() != false) super.onBackPressed()
     }

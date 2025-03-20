@@ -8,8 +8,8 @@ android {
     defaultConfig {
         applicationId "com.getsensibill.spendmanager.demo"
         minSdkVersion 24
-        compileSdk 33
-        targetSdkVersion 33
+        compileSdk 34
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0"
 
@@ -50,7 +50,7 @@ dependencies {
     implementation "com.google.code.gson:gson:2.8.8"
 
     /** SDK All is the base version of our sdk, including all the important modules. **/
-    implementation "com.getsensibill:sensibill-sdk-all:2022.0.3"
+    implementation "com.getsensibill:sensibill-sdk-all:2022.0.10"
 
     // required to avoid crash on Android 12 API 31
     implementation 'androidx.work:work-runtime-ktx:2.7.1'
