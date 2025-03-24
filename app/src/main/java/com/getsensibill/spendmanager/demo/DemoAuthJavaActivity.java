@@ -16,8 +16,8 @@ import com.getsensibill.core.LoginError;
 import com.getsensibill.core.SDKInitializeListener;
 import com.getsensibill.core.SDKStartup;
 import com.getsensibill.core.SensibillSDK;
-import com.getsensibill.oauthclient.OAuthSettings;
-import com.getsensibill.oauthclient.OauthSession;
+import com.getsensibill.rest.client.v1.oauth.OAuthSettings;
+import com.getsensibill.rest.client.v1.oauth.OauthSession;
 import com.getsensibill.sensibillauth.SensibillAuth;
 import com.getsensibill.sensibillauth.SensibillAuthBuilder;
 import com.getsensibill.spendmanager.demo.databinding.ActivityDemoAuthBinding;
@@ -131,17 +131,15 @@ public class DemoAuthJavaActivity extends AppCompatActivity {
         SensibillAuth sensibillAuth = new SensibillAuthBuilder(this, AuthConfig.INSTANCE.getEnvironment(), oAuthSettings)
                 .build();
 
-        // Creates the builder for the SDK Initializer
-        InitializationBuilder builder = new InitializationBuilder(this, AuthConfig.INSTANCE.getEnvironment());
-
         // If using username / password auth, use the `TokenProvider` provided by `SensibillAuth`
-        TokenProvider tokenProvider = sensibillAuth.getTokenProvider();
-
         // Provide a Token Provider to SDK initializer.  This token provider will be called when the
         // SDK starts, as well as if the token expires while the SDK is in use.
         // The token provider _must_ be provided in the `Initializer`, however it will not be used
         // until `SensibillSDK.start` is called.
-        builder.authTokenProvider(tokenProvider);
+        TokenProvider tokenProvider = sensibillAuth.getTokenProvider();
+
+        // Creates the builder for the SDK Initializer
+        InitializationBuilder builder = new InitializationBuilder(this, AuthConfig.INSTANCE.getEnvironment(), tokenProvider);
 
         // Initialize the SDK
         SensibillSDK.getInstance().initialize(builder.build(), new SDKInitializeListener() {
@@ -171,11 +169,12 @@ public class DemoAuthJavaActivity extends AppCompatActivity {
         Timber.i("For the demo, we are just releasing the SDK on every run through.");
         SensibillSDK.getInstance().release();
 
-        // Creates the builder for the SDK Initializer
-        InitializationBuilder builder = new InitializationBuilder(this, AuthConfig.INSTANCE.getEnvironment());
-
         // Create a token provider that will just be used to provide the `AuthConfig` token.  If using an integration
         // server for providing tokens, this token provider is called when the SDK requires a (new) auth token.
+        // Provide a Token Provider to SDK initializer.  This token provider will be called when the
+        // SDK starts, as well as if the token expires while the SDK is in use.
+        // The token provider _must_ be provided in the `Initializer`, however it will not be used
+        // until `SensibillSDK.start` is called.
         final TokenProvider tokenProvider = new TokenProvider() {
             @Override
             public void provideTokenReplacement(@Nullable String s, @NonNull String s1, @NonNull OnTokenProviderListener onTokenProviderListener) {
@@ -183,11 +182,8 @@ public class DemoAuthJavaActivity extends AppCompatActivity {
             }
         };
 
-        // Provide a Token Provider to SDK initializer.  This token provider will be called when the
-        // SDK starts, as well as if the token expires while the SDK is in use.
-        // The token provider _must_ be provided in the `Initializer`, however it will not be used
-        // until `SensibillSDK.start` is called.
-        Initializer initializer = builder.authTokenProvider(tokenProvider).build();
+        // Creates the builder for the SDK Initializer
+        Initializer initializer = new InitializationBuilder(this, AuthConfig.INSTANCE.getEnvironment(), tokenProvider).build();
 
         // Initialize the SDK
         SensibillSDK.getInstance().initialize(initializer, new SDKInitializeListener() {
