@@ -7,7 +7,7 @@ import android.view.View;
 
 import com.getsensibill.captureflow.coordinator.CaptureFlowCoordinator;
 import com.getsensibill.captureflow.coordinator.CaptureFlowState;
-import com.getsensibill.capturestandalone.models.CaptureConfig;
+import com.getsensibill.capturestandalone.config.CaptureConfig;
 import com.getsensibill.core.analytic.Transaction;
 import com.getsensibill.spendmanager.demo.databinding.ActivityCaptureFlowJavaBinding;
 

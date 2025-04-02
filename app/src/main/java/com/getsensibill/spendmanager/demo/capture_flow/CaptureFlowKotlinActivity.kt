@@ -31,11 +31,14 @@ class CaptureFlowKotlinActivity : AppCompatActivity() {
                     is CaptureFlowState.ImagesCaptured -> "Images are captured"
                     is CaptureFlowState.FLOW_CANCELLED -> "Capture flow cancelled"
                     is CaptureFlowState.Error -> "Error occurred: ${newState.exception.message}"
-                    is CaptureFlowState.Transacting -> {
-                        val transaction = with(newState.transaction) {
-                            "status:$status\nlocalId:$localId\ntxnId:$transactionId\nreceiptId:$receiptId"
+                    is CaptureFlowState.DocumentUploading -> {
+                        val update = with(newState.update) {
+                            "status:$status\nlocalId:$localId\ndocumentId:$documentId\naccountId:$accountId\nextTxnId:$externalAccountTransactionId"
                         }
-                        "Transacting\n$transaction\n(savedExtTxnId:$externalAccountTransactionId)"
+                        "Uploading\n$update\n(savedExtTxnId:$externalAccountTransactionId)"
+                    }
+                    is CaptureFlowState.Transacting -> {
+                        "Deprecated and replaced with DocumentUploading"
                     }
                 }
                 binding.progressText.appendOnNewLine("${Date()}: $text")

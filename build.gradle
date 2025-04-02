@@ -1,11 +1,11 @@
 buildscript {
-    ext.kotlin_version = "1.6.10"
+    ext.kotlin_version = '1.9.22'
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.4'
+        classpath 'com.android.tools.build:gradle:8.6.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -16,7 +16,7 @@ allprojects {
         google()
         mavenCentral()
         maven {
-            url 'https://maven.getsensibill.com'
+            url 'https://maven.pkg.github.com/getsensibill/sdk-android'
             credentials {
                 username 'TO BE PROVIDED BY SENSIBILL'
                 password 'TO BE PROVIDED BY SENSIBILL'
@@ -26,6 +26,3 @@ allprojects {
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}

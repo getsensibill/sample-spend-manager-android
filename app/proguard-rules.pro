@@ -19,3 +19,18 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-dontwarn com.google.errorprone.annotations.Immutable
+-dontwarn javax.persistence.Basic
+-dontwarn javax.persistence.Column
+-dontwarn javax.persistence.Entity
+-dontwarn javax.persistence.EnumType
+-dontwarn javax.persistence.Enumerated
+-dontwarn javax.persistence.FetchType
+-dontwarn javax.persistence.GeneratedValue
+-dontwarn javax.persistence.Id
+-dontwarn javax.persistence.JoinColumn
+-dontwarn javax.persistence.ManyToOne
+-dontwarn javax.persistence.OneToOne
+-dontwarn javax.persistence.Table
+-dontwarn javax.persistence.Version

@@ -5,9 +5,10 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.getsensibill.capturestandalone.models.CaptureConfig;
+import com.getsensibill.capturestandalone.config.CaptureConfig;
 import com.getsensibill.capturestandalone.models.FlashMode;
 import com.getsensibill.web.ui.CaptureWithMetadataFlowActivity;
+import com.getsensibill.capturestandalone.config.DocumentTypeStrings;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -25,22 +26,7 @@ public class CaptureWithMetaDataFlowJavaActivity extends AppCompatActivity {
         final Intent intent = new Intent(this, CaptureWithMetadataFlowActivity.class);
 
         // If you wish to override the default capture config
-        final CaptureConfig captureConfig = new CaptureConfig(
-                true,
-                true,
-                FlashMode.FLASH_MODE_OFF,
-                true,
-                true,
-                false,
-                true,
-                3,
-                false,
-                true,
-                false,
-                true,
-                true,
-                true
-        );
+        final CaptureConfig captureConfig = CaptureConfig.Companion.getDefaultReceiptCaptureConfig();
         intent.putExtra(CaptureWithMetadataFlowActivity.ARG_CAPTURE_CONFIG, captureConfig);
 
         // If the receipt should be attached to some external transaction
